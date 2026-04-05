@@ -15,7 +15,7 @@ export default function HeartComponent() {
             </div>
 
             <section className='relative'>
-                <div>
+                <div className='heart-beat'>
                     <Image src={heart} alt="Light modeHeart" className='dark:hidden' />
                     <Image src={blackHeart} alt=" Dark mode Heart" className='hidden dark:block' />
                 </div>

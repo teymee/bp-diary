@@ -4,11 +4,9 @@ import Image from 'next/image'
 import heart from "@/assets/images/heart.svg"
 import star from "@/assets/images/star.svg"
 import blackHeart from "@/assets/images/black-heart.svg"
-import { useTheme } from 'next-themes'
 import OverviewCard from './OverviewCard'
 
 export default function HeartComponent() {
-    const { theme } = useTheme()
     return (
         <section className='space-y-4 '>
             <div>

@@ -42,7 +42,7 @@ export default function RootLayout({
           disableTransitionOnChange>
 
           <Navbar />
-          <section className="mt-4 flex items-start gap-x-4 wrapper ">
+          <section className="mt-4 flex items-start gap-x-6 wrapper ">
 
             <section className="w-[35%] h-full">
               <HeartComponent />

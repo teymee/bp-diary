@@ -9,7 +9,7 @@ type OverviewCardProps = {
 
 export default function OverviewCard({ image, title, children, topContent }: OverviewCardProps) {
     return (
-        <section className='bg-white border border-white-300  space-y-3 px-2.5 py-3 rounded-2xl [ dark:border-black-300 dark:bg-black-200 ]'>
+        <section className='bg-white border border-white-300 space-y-3 px-2.5 py-3 rounded-2xl h-full flex flex-col [ dark:border-black-300 dark:bg-black-200 ]'>
             {
                 !topContent && (
                     <section className='flex items-center gap-x-3 pt-2 text-md text-gray-700 font-medium'>
@@ -23,7 +23,7 @@ export default function OverviewCard({ image, title, children, topContent }: Ove
 
 
 
-            <section className='bg-white-100 dark:bg-black-100 rounded-xl px-4 py-2'>
+            <section className='bg-white-100 dark:bg-black-100 rounded-xl px-3 py-2 flex-1'>
                 {children}
             </section>
         </section>

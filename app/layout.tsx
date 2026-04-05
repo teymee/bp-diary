@@ -34,7 +34,7 @@ export default function RootLayout({
       className={`${nunito.variable} ${geistMono.variable} h-full antialiased`}
     >
 
-      <body className="min-h-full flex flex-col relative">
+      <body className="min-h-screen flex flex-col relative">
         <ThemeProvider
           attribute="data-theme"
           defaultTheme="system"
@@ -42,12 +42,12 @@ export default function RootLayout({
           disableTransitionOnChange>
 
           <Navbar />
-          <section className="mt-4 flex items-start gap-x-6 wrapper ">
+          <section className="mt-4 flex flex-1 items-stretch gap-x-16 wrapper ">
 
             <section className="w-[35%] h-full">
               <HeartComponent />
             </section>
-            <section className="w-[65%]">
+            <section className="w-[65%] flex flex-col">
               {children}
             </section>
           </section>

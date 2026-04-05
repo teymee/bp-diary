@@ -5,6 +5,7 @@ import bpAverage from "@/assets/images/BP-average.svg"
 import normalTag from "@/assets/images/normal-tag.svg"
 import empty from "@/assets/images/empty.svg"
 import Image from 'next/image'
+import heartPulse from "@/assets/images/heart-pulse.svg"
 
 export default function FirstRow() {
     const latestData = null
@@ -68,7 +69,7 @@ export default function FirstRow() {
             </section>
 
             <section className='h-full'>
-                <OverviewCard image={latestReading} title="Heart Pulse Average">
+                <OverviewCard image={heartPulse} title="Heart Pulse Average">
                     <section className='text-white-200 text-sm h-full'>
                         {
                             !latestData && (

@@ -128,11 +128,11 @@ export default function HeartComponent() {
                     <Image src={heart} alt="Light modeHeart" className='dark:hidden' />
                     <Image src={blackHeart} alt=" Dark mode Heart" className='hidden dark:block' />
                     <span className='pointer-events-none absolute right-0 top-10 whitespace-nowrap rounded-lg bg-white px-3 py-1 text-xs font-medium text-primary-200 opacity-0 transition-opacity group-hover:opacity-100 dark:bg-black-100 dark:text-white-100'>
-                        Click heart to{' '}
-                        <span className={`font-bold ${isHeartbeatRunning ? 'text-red-500 dark:text-red-400' : 'text-green-600 dark:text-green-400'}`}>
+                        Click to 
+                        <span className={`px-2 font-bold ${isHeartbeatRunning ? 'text-red-500 dark:text-red-400' : 'text-green-600 dark:text-green-400'}`}>
                             {isHeartbeatRunning ? 'stop' : 'start'}
                         </span>{' '}
-                        heartbeat
+                        the heart
                     </span>
                 </div>
 

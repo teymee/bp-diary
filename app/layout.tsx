@@ -3,7 +3,6 @@ import { Geist_Mono, Nunito } from "next/font/google";
 import "./globals.css";
 import Navbar from "@/components/navbar";
 import { ThemeProvider } from "@/components/Providers/ThemeProvider";
-import HeartComponent from "@/components/UI/Heart";
 
 const nunito = Nunito({
   variable: "--font-nunito",
@@ -19,7 +18,7 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: "BP Diary",
-description: "Track your blood pressure and heart rate, log readings manually or from images, and view trends over time to monitor your health."
+  description: "Track your blood pressure and heart rate, log readings manually or from images, and view trends over time to monitor your health."
 };
 
 export default function RootLayout({
@@ -34,7 +33,7 @@ export default function RootLayout({
       className={`${nunito.variable} ${geistMono.variable} h-full antialiased`}
     >
 
-      <body className="min-h-screen flex flex-col relative">
+      <body className="h-screen flex flex-col relative">
         <ThemeProvider
           attribute="data-theme"
           defaultTheme="system"
@@ -42,17 +41,13 @@ export default function RootLayout({
           disableTransitionOnChange>
 
           <Navbar />
-          <section className="mt-4 flex flex-1 items-stretch gap-x-16 wrapper ">
 
-            <section className="w-[35%] h-full">
-              <HeartComponent />
-            </section>
-            <section className="w-[65%] flex flex-col">
-              {children}
-            </section>
+          <section className="mt-4 wrapper flex flex-1 flex-col">
+            {children}
           </section>
         </ThemeProvider>
       </body>
+      <script async src="https://docs.opencv.org/4.x/opencv.js"></script>
     </html>
   );
 }

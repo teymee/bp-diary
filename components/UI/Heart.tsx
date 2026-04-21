@@ -108,11 +108,11 @@ export default function HeartComponent() {
             </div>
 
             <section className='relative'>
-                <audio 
+                {/* <audio 
                     ref={audioRef} 
                     src="/heartbeat.mp3" 
                     preload="auto"
-                />
+                /> */}
                 <div
                     className='heart-beat relative inline-block cursor-pointer group'
                     style={{ animationPlayState: isHeartbeatRunning ? 'running' : 'paused' }}

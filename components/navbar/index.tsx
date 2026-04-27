@@ -33,7 +33,7 @@ export default function Navbar() {
     },
        {
       name: "BP Goals",
-      link: "/blood-pressure-goals"
+      link: "/bp-goal"
     },
     {
       name: "All Readings",
@@ -63,7 +63,7 @@ export default function Navbar() {
 
           {
             routes.map((route) => (
-              <Link key={route.link} href={route.link} className={`text-sm font-medium ${pathName === route.link ? "text-primary-100 " : "text-gray-500 dark:text-white-200"}`}>
+              <Link key={route.link} href={route.link} className={`text-sm font-semibold ${pathName === route.link ? "text-green-500 dark:text-primary-100 " : "text-gray-500 dark:text-white-200"}`}>
                 {route.name}
               </Link>
             ))

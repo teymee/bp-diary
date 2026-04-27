@@ -5,27 +5,78 @@ import Image from "next/image"
 import logo from "@/assets/images/logo.svg"
 import avatar from "@/assets/images/avatar.svg"
 import add from "@/assets/images/add.svg"
-import { useEffect, useState } from "react"
+import { use, useEffect, useState } from "react"
+import AddReading from "./component"
+
+import plus from "@/assets/images/Plus.svg"
+import Link from "next/link"
+import { usePathname } from "next/navigation"
+import { link } from "fs"
 
 export default function Navbar() {
+  const pathName = usePathname()
   const { theme, setTheme } = useTheme()
   const isDark = theme === "dark"
 
   const [mounted, setMounted] = useState(false)
+  const [isModalOpen, setIsModalOpen] = useState(false)
 
-  useEffect(()=> setMounted(true), [])
+  // eslint-disable-next-line react-hooks/set-state-in-effect
+  useEffect(() => setMounted(true), [])
 
   if (!mounted) return null
+
+  const routes = [
+    {
+      name: "BP Averages",
+      link: "/blood-pressure-average"
+    },
+       {
+      name: "BP Goals",
+      link: "/bp-goal"
+    },
+    {
+      name: "All Readings",
+      link: "/all-reading"
+    }
+
+  ]
 
   return (
     <nav className="bg-white sticky  top-0 [ dark:bg-black-100 ] p-4 ">
 
       <section className="wrapper flex justify-between items-center ">
 
-        <div className="flex items-center gap-x-2">
-          <Image src={logo} alt="Logo" width={23} height={23} />
-          <h1 className="font-bold">BP-DIARY</h1>
-        </div>
+        {/* 🚨 Logo  */}
+        <Link href="/" className="flex items-center gap-x-3 text-base text-gray-700 font-medium [ dark:text-foreground ]">
+          <div className="flex items-center gap-x-2">
+            <Image src={logo} alt="Logo" width={23} height={23} />
+            <h1 className="font-bold">BP-DIARY</h1>
+          </div>
+        </Link>
+        {/*  */}
+
+
+        {/* 🚨 NavLinks  */}
+
+        <section className="flex gap-x-4 items-center">
+
+          {
+            routes.map((route) => (
+              <Link key={route.link} href={route.link} className={`text-sm font-semibold ${pathName === route.link ? "text-green-500 dark:text-primary-100 " : "text-gray-500 dark:text-white-200"}`}>
+                {route.name}
+              </Link>
+            ))
+          }
+
+
+
+        </section>
+
+        {/*  */}
+
+
+        {/* 🚨 Actions  */}
 
         <section className="flex gap-x-4 items-center text-sm">
           <button
@@ -77,11 +128,26 @@ export default function Navbar() {
             <Image src={avatar} alt="Avatar" width={30} height={30} className="rounded-full" />
           </div>
 
-          <div className="bg-primary-200 px-3 flex items-center gap-x-2 rounded-full text-primary-100 py-1.5">
+          <Link href="/add-reading" >
+
+            <div className="bg-primary-200 cursor-pointer px-3 flex items-center gap-x-2 rounded-full text-primary-100 py-1.5">
+
+              <Image src={plus} alt="Avatar" width={25} height={25} className="rounded-full" />
+              <p>Add Reading</p>
+            </div>
+          </Link>
+
+          {/* <div onClick={() => setIsModalOpen(!isModalOpen)} className="bg-primary-200 cursor-pointer px-3 flex items-center gap-x-2 rounded-full text-primary-100 py-1.5">
             <p>Add Reading</p>
-            <Image src={add} alt="Avatar" width={25} height={25} className="rounded-full" /> </div>
+            <Image src={add} alt="Avatar" width={25} height={25} className="rounded-full" /> 
+            </div> */}
         </section>
+
+        {/*  */}
       </section>
+
+
+      <AddReading isModalOpen={isModalOpen} setIsModalOpen={setIsModalOpen} />
     </nav>
   )
 }

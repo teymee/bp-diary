@@ -11,14 +11,25 @@
   --color-black-100: #202125;
   --color-black-200: #0d0d0d;
   --color-black-300: #252424;
+  --color-black-400: #2B2C32;
+  
 
   --color-white-100: #f3f3f3;
   --color-white-200: #818181;
   --color-white-300: #E8E7E7;
   --color-white-400: #DFDFDF;
+  --color-white-500: #979595;
   
 }
 
 .wrapper {
   @apply w-[90%] mx-auto;
+}
+
+.inputStyle{
+  @apply w-full rounded-lg mt-2  shadow-sm  sm:text-sm bg-white-400 py-3 px-2 dark:bg-black-400
+}
+
+.labelStyle{
+  @apply block text-base font-semibold text-gray-700 dark:text-white-100
 }

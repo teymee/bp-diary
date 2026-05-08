@@ -6,10 +6,12 @@ import heart from "@/assets/images/heart.svg"
 import star from "@/assets/images/star.svg"
 import blackHeart from "@/assets/images/black-heart.svg"
 import OverviewCard from './OverviewCard'
+import { usePathname } from 'next/navigation'
 
 export default function HeartComponent() {
     const audioRef = useRef<HTMLAudioElement>(null)
     const hasStartedRef = useRef(false)
+    const pathName = usePathname()
     const [isHeartbeatRunning, setIsHeartbeatRunning] = useState(true)
 
     const startHeartbeatAudio = useCallback(() => {
@@ -102,10 +104,13 @@ export default function HeartComponent() {
 
     return (
         <section className='space-y-4 '>
-            <div>
-                <h3 className='font-semibold text-base'>Welcome <span className='text-primary-200 font-bold'>My Account</span></h3>
-                <h1 className='font-bold text-[36px]'>Overview Of Your Health</h1>
-            </div>
+
+            {
+                !pathName.includes('login') && <div>
+                    <h3 className='font-semibold text-base'>Welcome <span className='text-primary-200 font-bold'>My Account</span></h3>
+                    <h1 className='font-bold text-[36px]'>Overview Of Your Health</h1>
+                </div>
+            }
 
             <section className='relative'>
                 {/* <audio 
@@ -128,7 +133,7 @@ export default function HeartComponent() {
                     <Image src={heart} alt="Light modeHeart" className='dark:hidden' />
                     <Image src={blackHeart} alt=" Dark mode Heart" className='hidden dark:block' />
                     <span className='pointer-events-none absolute right-0 top-10 whitespace-nowrap rounded-lg bg-white px-3 py-1 text-xs font-medium text-primary-200 opacity-0 transition-opacity group-hover:opacity-100 dark:bg-black-100 dark:text-white-100'>
-                        Click to 
+                        Click to
                         <span className={`px-2 font-bold ${isHeartbeatRunning ? 'text-red-500 dark:text-red-400' : 'text-green-600 dark:text-green-400'}`}>
                             {isHeartbeatRunning ? 'stop' : 'start'}
                         </span>{' '}
@@ -136,7 +141,7 @@ export default function HeartComponent() {
                     </span>
                 </div>
 
-                <section className='absolute -bottom-20 left-0 w-52'>
+                {!pathName.includes('login') && (<><section className='absolute -bottom-20 left-0 w-52'>
 
                     <OverviewCard image={star} title="Your Heart Analysis">
                         <div className='h-20 text-white-200 text-sm'>
@@ -145,17 +150,17 @@ export default function HeartComponent() {
                     </OverviewCard>
                 </section>
 
-                <section className='absolute -bottom-20 right-0 w-60'>
-                    <section className='bg-white border border-white-300 space-y-2 text-sm font-medium px-2.5 py-3 rounded-2xl [ dark:border-black-300 dark:bg-black-200 ]'>
-                        <div className='bg-white-100 dark:bg-black-100 py-2 px-4 rounded-xl'>
-                            <p>Gender : Male</p>
-                        </div>
+                    <section className='absolute -bottom-20 right-0 w-60'>
+                        <section className='bg-white border border-white-300 space-y-2 text-sm font-medium px-2.5 py-3 rounded-2xl [ dark:border-black-300 dark:bg-black-200 ]'>
+                            <div className='bg-white-100 dark:bg-black-100 py-2 px-4 rounded-xl'>
+                                <p>Gender : Male</p>
+                            </div>
 
-                        <div className='bg-white-100 dark:bg-black-100 py-2 px-4 rounded-xl'>
-                            <p>Age : 30</p>
-                        </div>
-                    </section>
-                </section>
+                            <div className='bg-white-100 dark:bg-black-100 py-2 px-4 rounded-xl'>
+                                <p>Age : 30</p>
+                            </div>
+                        </section>
+                    </section></>)}
 
             </section>
         </section>

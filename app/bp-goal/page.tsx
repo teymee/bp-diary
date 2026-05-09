@@ -25,7 +25,6 @@ export default function BPGoal() {
                 return
             } else {
                 setGoal(data)
-                console.log("Fetched goal:", data)
             }
             setLoading(false)
         }

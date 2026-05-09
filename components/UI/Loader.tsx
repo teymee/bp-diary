@@ -2,7 +2,7 @@ import React from 'react'
 
 export default function Loader() {
   return (
-    <div className="flex flex-1 flex-col items-center justify-center gap-6">
+    <div className="flex flex-1 flex-col items-center justify-center h-full gap-6">
       {/* Pulsing heart */}
       <div className="relative flex items-center justify-center">
         {/* Ripple rings */}

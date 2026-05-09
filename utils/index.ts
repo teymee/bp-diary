@@ -1,5 +1,26 @@
 
 import { PixelCrop } from "react-image-crop";
+import moment from "moment";
+import normal from "@/assets/images/normal-bp.svg"
+import elevated from "@/assets/images/elevated-bp.svg"
+import hbp1 from "@/assets/images/hbp1.svg"
+import hbp2 from "@/assets/images/hbp2.svg"
+
+const hasOffset = (dateStr: string) => {
+  const str = String(dateStr);
+  const match = str.match(/([+-])(\d{2}):(\d{2})$/);
+  if (!match) return false;
+
+  const [, , hours, minutes] = match;
+  return !(hours === "00" && minutes === "00");
+};
+export const formatDate = (date: string, format = "MMM Do, YYYY") => {
+  if (date === "N/A") return "N/A";
+  if (!date) return;
+
+  const parsedDate = hasOffset(date) ? moment(date) : moment.utc(date);
+  return parsedDate.format(format);
+};
 
 export const showToast = (toast: any, severity: 'success' | 'error', summary: string, detail: string) => {
   toast.current?.show({
@@ -23,6 +44,23 @@ export const readingValidation = ({ toast, session, sys, dia, pulse }: { toast: 
     showToast(toast, 'error', 'Invalid pulse', 'Enter a valid pulse value.')
     return
   }
+
+}
+
+export const getLevelImage = (sys: number, dia: number, pulse: number) => {
+  if (sys < 120 && dia < 80) {
+    return normal
+  }
+  if (sys >= 120 && sys < 130 && dia < 80) {
+    return elevated
+  }
+  if ((sys >= 130 && sys < 140) || (dia >= 80 && dia < 90)) {
+    return hbp1
+  }
+  if (sys >= 140 || dia >= 90) {
+    return hbp2
+  }
+
 
 }
 export const getLevelColor = (level: string, number?: number) => {

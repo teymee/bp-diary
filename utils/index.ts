@@ -6,6 +6,19 @@ import elevated from "@/assets/images/elevated-bp.svg"
 import hbp1 from "@/assets/images/hbp1.svg"
 import hbp2 from "@/assets/images/hbp2.svg"
 
+export type ReadingType = {
+
+    created_at: string,
+    diastolic: number,
+    id: string,
+    image_url: string | null,
+    note: string | null,
+    pulse: number,
+    recorded_at: string,
+    source: string,
+    systolic: number,
+    user_id: string
+}
 const hasOffset = (dateStr: string) => {
   const str = String(dateStr);
   const match = str.match(/([+-])(\d{2}):(\d{2})$/);

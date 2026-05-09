@@ -6,9 +6,16 @@ import normalTag from "@/assets/images/normal-tag.svg"
 import empty from "@/assets/images/empty.svg"
 import Image from 'next/image'
 import heartPulse from "@/assets/images/heart-pulse.svg"
+import { formatDate, getLevelImage, ReadingType } from '@/utils'
 
-export default function FirstRow() {
-    const latestData = null
+export default function FirstRow({ readings }: { readings: ReadingType[] }) {
+    const latestData = readings[0]
+    const { systolic, diastolic, pulse, recorded_at } = latestData || {}
+
+    const averagePulse = readings.length > 0 ? Math.round(readings.reduce((sum, r) => sum + r.pulse, 0) / readings.length) : null
+    const averageSystolic = readings.length > 0 ? Math.round(readings.reduce((sum, r) => sum + r.systolic, 0) / readings.length) : null
+    const averageDiastolic = readings.length > 0 ? Math.round(readings.reduce((sum, r) => sum + r.diastolic, 0) / readings.length) : null
+
     return (
         <section className='grid grid-cols-3 items-stretch gap-x-4'>
 
@@ -16,19 +23,19 @@ export default function FirstRow() {
                 <OverviewCard image={latestReading} title="Latest Readings">
                     <section className=' text-white-200 text-sm'>
                         {
-                            !latestData && (
+                            latestData && (
                                 <section className='space-y-3'>
                                     <section className='space-y-2'>
                                         <div className='bg-white-400 py-3 rounded-lg px-3 '>
                                             <div className='flex items-center gap-x-2'>
-                                                <p className='text-3xl text-black font-semibold'>0 </p>
-                                                <span className='text-white-200 font-medium! text-base'>/ 0 mmhg</span>
+                                                <p className='text-3xl text-black font-semibold'>{latestData.systolic} </p>
+                                                <span className='text-white-200 font-medium! text-base'>/ {latestData.diastolic} mmhg</span>
                                             </div>
                                         </div>
 
                                         <div className='bg-white-400 py-3 rounded-lg px-3 '>
                                             <div className='flex items-center gap-x-2'>
-                                                <p className='text-3xl text-black font-semibold'>0 </p>
+                                                <p className='text-3xl text-black font-semibold'>{latestData.pulse} </p>
                                                 <span className='text-white-200 font-medium! text-base'>bpm</span>
                                             </div>
                                         </div>
@@ -36,11 +43,11 @@ export default function FirstRow() {
                                     </section>
 
                                     <section className='space-y-2'>
-                                        <Image src={normalTag} alt="Normal tag" />
+                                        <Image src={getLevelImage(systolic, diastolic, pulse)} alt="Blood pressure level" />
 
                                         <div className='flex justify-between items-center text-[11px]'>
                                             <p>Last Updated</p>
-                                            <p>10:30AM</p>
+                                            <p>{formatDate(recorded_at, "MMM Do, YYYY, hh:mma")}</p>
                                         </div>
                                     </section>
                                 </section>
@@ -54,7 +61,7 @@ export default function FirstRow() {
                 <OverviewCard image={bpAverage} title="Blood Pressure Average">
                     <section className='text-white-200 text-sm h-full'>
                         {
-                            !latestData && (
+                            averageDiastolic && (
                                 <section className='flex flex-col items-center justify-center gap-y-3 h-full'>
                                     <Image src={empty} alt="No data available" />
                                     <div className='text-center'>
@@ -64,6 +71,7 @@ export default function FirstRow() {
                                 </section>
                             )
                         }
+                      
                     </section>
                 </OverviewCard>
             </section>
@@ -72,7 +80,7 @@ export default function FirstRow() {
                 <OverviewCard image={heartPulse} title="Heart Pulse Average">
                     <section className='text-white-200 text-sm h-full'>
                         {
-                            !latestData && (
+                            averagePulse && (
                                 <section className='flex flex-col items-center justify-center gap-y-3 h-full'>
                                     <Image src={empty} alt="No data available" />
                                     <div className='text-center'>

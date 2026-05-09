@@ -10,26 +10,14 @@ import { useEffect, useState } from "react";
 import { supabase } from "@/lib/supabase/client";
 import { useAuth } from "@/providers/AuthProvider";
 import Loader from "@/components/UI/Loader";
-import { formatDate, getLevelImage } from "@/utils";
+import { formatDate, getLevelImage, ReadingType } from "@/utils";
 
-type Reading = {
 
-    created_at: string,
-    diastolic: number,
-    id: string,
-    image_url: string | null,
-    note: string | null,
-    pulse: number,
-    recorded_at: string,
-    source: string,
-    systolic: number,
-    user_id: string
-}
 
 export default function AllReadings() {
 
     const [loading, setLoading] = useState(false)
-    const [readings, setReadings] = useState<Reading[] | null>(null)
+    const [readings, setReadings] = useState<ReadingType[] | null>(null)
     const { userId } = useAuth()
 
     useEffect(() => {

@@ -1,6 +1,9 @@
 
 @import "tailwindcss";
 @import "../assets/tailwind-assets.css";
+@import "primereact/resources/themes/lara-light-green/theme.css";
+@import "primereact/resources/primereact.min.css";
+@import "primeicons/primeicons.css";
 @custom-variant dark (&:where([data-theme=dark], [data-theme=dark] *));
 
 :root {

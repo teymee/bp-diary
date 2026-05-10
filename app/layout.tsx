@@ -3,6 +3,7 @@ import { Geist_Mono, Nunito } from "next/font/google";
 import "./globals.css";
 import Navbar from "@/components/navbar";
 import { ThemeProvider } from "@/components/Providers/ThemeProvider";
+import { AuthProvider } from "@/providers/AuthProvider";
 
 const nunito = Nunito({
   variable: "--font-nunito",
@@ -34,18 +35,20 @@ export default function RootLayout({
     >
 
       <body className="h-screen flex flex-col relative">
-        <ThemeProvider
-          attribute="data-theme"
-          defaultTheme="system"
-          enableSystem
-          disableTransitionOnChange>
+        <AuthProvider>
+          <ThemeProvider
+            attribute="data-theme"
+            defaultTheme="system"
+            enableSystem
+            disableTransitionOnChange>
 
-          <Navbar />
+            <Navbar />
 
-          <section className="mt-4 wrapper flex flex-1 flex-col">
-            {children}
-          </section>
-        </ThemeProvider>
+            <section className="mt-4 wrapper flex flex-1 flex-col">
+              {children}
+            </section>
+          </ThemeProvider>
+        </AuthProvider>
       </body>
       <script async src="https://docs.opencv.org/4.x/opencv.js"></script>
     </html>

@@ -1,15 +1,14 @@
 "use client";
 
-import { getLocalStorageService } from "@/utils";
+import { useAuth } from "@/providers/AuthProvider";
 import { redirect } from "next/navigation";
 
 export default function Home() {
+    const { sessionLoader, session } = useAuth()
+    if (!sessionLoader && session) {
+        redirect("/dashboard")
+    } else if (!sessionLoader && !session) {
+        redirect("/login")
+    }
 
-    redirect("/dashboard");
-//  const user = getLocalStorageService("sb-access-token");
-//  if (!user) {
-//    redirect("/login");
-//  }else{
-//   redirect("/dashboard");
-//  }
 }

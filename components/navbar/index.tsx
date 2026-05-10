@@ -32,7 +32,7 @@ export default function Navbar() {
       link: "/blood-pressure-average"
     },
        {
-      name: "BP Goals",
+      name: "BP Goal",
       link: "/bp-goal"
     },
     {
@@ -43,7 +43,7 @@ export default function Navbar() {
   ]
 
   return (
-    <nav className="bg-white sticky  top-0 [ dark:bg-black-100 ] p-4 ">
+    <nav className="bg-white sticky  top-0 [ dark:bg-black-100 ] p-4 z-50 ">
 
       <section className="wrapper flex justify-between items-center ">
 

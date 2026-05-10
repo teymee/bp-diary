@@ -50,7 +50,7 @@ export default function GoalInfo() {
     return (
         <section className='space-y-4'>
 
-            <OverviewCard image={crosshair} title="Understanding BP Goals">
+            <OverviewCard image={crosshair} title="Understanding BP Goal">
                 <ul className='list-disc pl-5 space-y-4 py-4'>
                     {
                         tips.map((tip, index) => (

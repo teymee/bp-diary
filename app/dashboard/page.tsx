@@ -58,7 +58,7 @@ export default function Dashboard() {
                             <section className='space-y-3'>
                                 <FirstRow readings={readings} />
                                 <section className='flex-1'>
-                                    <SecondRow />
+                                    <SecondRow  readings={readings} />
                                 </section>
                             </section>
 

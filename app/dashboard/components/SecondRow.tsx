@@ -1,24 +1,24 @@
 import OverviewCard from '@/components/UI/OverviewCard'
-import reminder from "@/assets/images/reminder.svg"
 import empty from "@/assets/images/empty.svg"
 import Image from 'next/image'
 import recentReading from "@/assets/images/recent-reading.svg"
 
 
-import add from "@/assets/images/add.svg"
+import { ReadingType } from '@/utils/types'
+import ReadingRow from '@/app/all-reading/components/ReadingRow'
 
-export default function SecondRow() {
-    const latestData = null
+export default function SecondRow({ readings }: { readings: ReadingType[] }) {
+    const latestReading = readings.slice(0, 5)
     return (
         <section className='flex flex-1 h-full gap-x-4 items-stretch'>
 
-          
+
 
             <section className='h-full w-full  '>
-                <OverviewCard image={ recentReading} title="Recent Readings">
-                    <section className='text-white-200 text-sm h-55'>
+                <OverviewCard image={recentReading} title="Recent Readings">
+                    <section className='text-white-200 text-sm py-10 px-4 max-h-100 overflow-y-scroll'>
                         {
-                            !latestData && (
+                            !latestReading || latestReading.length === 0 && (
                                 <section className='flex flex-col items-center justify-center gap-y-3 h-full'>
                                     <Image src={empty} alt="No data available" />
                                     <div className='text-center'>
@@ -27,6 +27,21 @@ export default function SecondRow() {
                                     </div>
                                 </section>
                             )
+
+
+                        }
+
+                        {
+                            latestReading && latestReading.length > 0 && (<section className="space-y-4">
+                                {
+                                    latestReading.map((reading) => {
+                                        return (
+                                            <ReadingRow key={reading.id} reading={reading} />
+
+                                        )
+                                    })
+                                }
+                            </section>)
                         }
                     </section>
                 </OverviewCard>

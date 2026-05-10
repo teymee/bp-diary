@@ -11,6 +11,37 @@
   --foreground: #171717;
 }
 
+/*  */
+
+::selection {
+  background-color: black !important;
+  color: #ffffff !important;
+}
+
+::-webkit-scrollbar {
+  width: 0.2rem;
+}
+
+::-webkit-scrollbar-track {
+  background-color: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: black;
+  height: 55px;
+}
+
+.hide-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+.hide-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+/*  */
+
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);

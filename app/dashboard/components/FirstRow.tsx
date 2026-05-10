@@ -206,14 +206,14 @@ export default function FirstRow({ readings }: { readings: ReadingType[] }) {
                                         <section className='space-y-2'>
                                             <div className='bg-white-400 py-3 rounded-lg px-3 '>
                                                 <div className='flex items-center gap-x-2'>
-                                                    <p className='text-3xl text-black font-semibold'>{latestData.systolic} </p>
-                                                    <span className='text-white-200 font-medium! text-base'>/ {latestData.diastolic} mmhg</span>
+                                                    <p className='text-3xl text-black font-semibold'>{systolic} </p>
+                                                    <span className='text-white-200 font-medium! text-base'>/ {diastolic} mmhg</span>
                                                 </div>
                                             </div>
 
                                             <div className='bg-white-400 py-3 rounded-lg px-3 '>
                                                 <div className='flex items-center gap-x-2'>
-                                                    <p className='text-3xl text-black font-semibold'>{latestData.pulse} </p>
+                                                    <p className='text-3xl text-black font-semibold'>{pulse} </p>
                                                     <span className='text-white-200 font-medium! text-base'>bpm</span>
                                                 </div>
                                             </div>

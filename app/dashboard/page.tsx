@@ -47,8 +47,8 @@ export default function Dashboard() {
             }
 
             {
-                !loading && readings && (<section className=' flex flex-1 items-stretch gap-x-16 '>
-                    <section className="w-[35%] h-full">
+                !loading && readings && (<section className=' relative flex flex-1 items-start gap-x-16 '>
+                    <section className="w-[35%] sticky top-24 self-start h-fit">
                         <HeartComponent />
                     </section>
 

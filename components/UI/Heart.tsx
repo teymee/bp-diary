@@ -35,16 +35,19 @@ export default function HeartComponent() {
 
     const handleHeartClick = useCallback(() => {
         const audio = audioRef.current
-        if (!audio) return
 
         setIsHeartbeatRunning((currentState) => {
             const nextState = !currentState
 
             if (!nextState) {
-                audio.pause()
-                audio.currentTime = 0
+                if (audio) {
+                    audio.pause()
+                    audio.currentTime = 0
+                }
             } else {
-                startHeartbeatAudio()
+                if (audio) {
+                    startHeartbeatAudio()
+                }
             }
 
             return nextState

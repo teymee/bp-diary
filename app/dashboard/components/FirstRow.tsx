@@ -2,7 +2,6 @@ import OverviewCard from '@/components/UI/OverviewCard'
 import React, { useEffect, useState } from 'react'
 import latestReading from "@/assets/images/latest-reading.svg"
 import bpAverage from "@/assets/images/BP-average.svg"
-import normalTag from "@/assets/images/normal-tag.svg"
 import empty from "@/assets/images/empty.svg"
 import Image from 'next/image'
 import heartPulse from "@/assets/images/heart-pulse.svg"

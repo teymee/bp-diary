@@ -43,7 +43,7 @@ export default function BPGoal() {
 
     return (
         <section className="flex flex-1 flex-col">
-            <div><h1 className='text-[36px] font-semibold'>BP Goals</h1></div>
+            <div><h1 className='text-[36px] font-semibold'>BP Goal</h1></div>
 
             {loading && <Loader />}
 

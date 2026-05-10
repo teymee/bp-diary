@@ -6,7 +6,7 @@ import HeartComponent from '@/components/UI/Heart'
 import Loader from '@/components/UI/Loader'
 import { supabase } from '@/lib/supabase/client'
 import { useAuth } from '@/providers/AuthProvider'
-import { ReadingType } from '@/utils'
+import { ReadingType } from '@/utils/types'
 
 export default function Dashboard() {
 

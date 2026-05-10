@@ -6,19 +6,13 @@ import target from "@/assets/images/target.svg"
 import RadioButton from "@/assets/images/RadioButton.svg"
 import OverviewCard from '@/components/UI/OverviewCard'
 import { formatDate } from '@/utils'
+import { GoalType } from '@/utils/types'
 
-type Goal = {
-    goal_name: string,
-    systolic: number,
-    diastolic: number,
-    pulse: number,
-    end_date: string
-}
+
 type ShowGoalProp = {
-    goal: Goal
+    goal: GoalType
 }
 export default function ShowGoal({ goal }: ShowGoalProp) {
-    console.log("ShowGoal component received goal:", goal)
     const headerTopContent = (
         <section className='flex items-center justify-between gap-x-3 pt-2'>
             <div className='flex-2 flex items-center gap-x-3 text-base text-gray-700 font-medium'>

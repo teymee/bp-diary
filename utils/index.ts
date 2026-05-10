@@ -7,19 +7,7 @@ import hbp1 from "@/assets/images/hbp1.svg"
 import hbp2 from "@/assets/images/hbp2.svg"
 import { text } from "stream/consumers";
 
-export type ReadingType = {
 
-  created_at: string,
-  diastolic: number,
-  id: string,
-  image_url: string | null,
-  note: string | null,
-  pulse: number,
-  recorded_at: string,
-  source: string,
-  systolic: number,
-  user_id: string
-}
 const hasOffset = (dateStr: string) => {
   const str = String(dateStr);
   const match = str.match(/([+-])(\d{2}):(\d{2})$/);
@@ -65,7 +53,7 @@ export const getLevelImage = (sys: number, dia: number, pulse: number) => {
   if (sys < 120 && dia < 80) {
     return normal
   }
-  if (sys >= 120 && sys < 130 && dia < 80) {
+  if (sys >= 120 && sys < 130 && dia < 85) {
     return elevated
   }
   if ((sys >= 130 && sys < 140) || (dia >= 80 && dia < 90)) {

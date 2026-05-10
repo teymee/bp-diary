@@ -10,7 +10,8 @@ import { useEffect, useState } from "react";
 import { supabase } from "@/lib/supabase/client";
 import { useAuth } from "@/providers/AuthProvider";
 import Loader from "@/components/UI/Loader";
-import { formatDate, getLevelImage, ReadingType } from "@/utils";
+import { formatDate, getLevelImage } from "@/utils";
+import { ReadingType } from "@/utils/types";
 
 
 

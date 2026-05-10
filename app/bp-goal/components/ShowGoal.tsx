@@ -5,6 +5,7 @@ import Image from 'next/image'
 import target from "@/assets/images/target.svg"
 import RadioButton from "@/assets/images/RadioButton.svg"
 import OverviewCard from '@/components/UI/OverviewCard'
+import { formatDate } from '@/utils'
 
 type Goal = {
     goal_name: string,
@@ -48,7 +49,7 @@ export default function ShowGoal({ goal }: ShowGoalProp) {
                         <div className='flex gap-x-2 items-center font-semibold bg-white-100 text-black rounded-lg pl-4 py-1'>
                             <h1 className='text-[32px]'>{goal.pulse} </h1> <span className='text-base'>bpm</span>
                         </div>
-                        <p>Due date by:  {goal.end_date}</p>
+                        <p>Due date by:  {formatDate(goal.end_date)}</p>
                     </section>
 
 

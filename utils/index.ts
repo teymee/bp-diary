@@ -5,19 +5,20 @@ import normal from "@/assets/images/normal-bp.svg"
 import elevated from "@/assets/images/elevated-bp.svg"
 import hbp1 from "@/assets/images/hbp1.svg"
 import hbp2 from "@/assets/images/hbp2.svg"
+import { text } from "stream/consumers";
 
 export type ReadingType = {
 
-    created_at: string,
-    diastolic: number,
-    id: string,
-    image_url: string | null,
-    note: string | null,
-    pulse: number,
-    recorded_at: string,
-    source: string,
-    systolic: number,
-    user_id: string
+  created_at: string,
+  diastolic: number,
+  id: string,
+  image_url: string | null,
+  note: string | null,
+  pulse: number,
+  recorded_at: string,
+  source: string,
+  systolic: number,
+  user_id: string
 }
 const hasOffset = (dateStr: string) => {
   const str = String(dateStr);
@@ -73,8 +74,26 @@ export const getLevelImage = (sys: number, dia: number, pulse: number) => {
   if (sys >= 140 || dia >= 90) {
     return hbp2
   }
+}
 
+export const getPulseLevelColor = (pulse: number): { textColor: string; bgColor: string; text: string } => {
+  if (pulse < 60) return {
+    textColor: "#074173",
+    bgColor: "#E1EFFF",
+    text: "Below Normal"
+  }
 
+  if (pulse <= 100) return {
+    textColor: "#00CE9C",
+    bgColor: "#D1FAE5",
+    text: "Normal"
+  }
+
+  return {
+    textColor: "#FE5C5C",
+    bgColor: "#FFE1E1",
+    text: "Above Normal"
+  }
 }
 export const getLevelColor = (level: string, number?: number) => {
   const levelLower = level.toLowerCase()

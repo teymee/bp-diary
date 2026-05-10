@@ -5,9 +5,10 @@ type OverviewCardProps = {
     title?: string,
     children: React.ReactNode
     topContent?: React.ReactNode
+    noPadding?: boolean
 }
 
-export default function OverviewCard({ image, title, children, topContent }: OverviewCardProps) {
+export default function OverviewCard({ image, title, children, topContent, noPadding }: OverviewCardProps) {
     return (
         <section className='bg-white border border-white-300 space-y-3 px-2.5 py-3 rounded-2xl h-full flex flex-col [ dark:border-black-300 dark:bg-black-200 ]'>
             {(image && title) && <div>
@@ -25,7 +26,7 @@ export default function OverviewCard({ image, title, children, topContent }: Ove
 
 
 
-            <section className='bg-white-100 dark:bg-black-100 rounded-xl px-3 py-2 flex-1'>
+            <section className={`bg-white-100 dark:bg-black-100 rounded-xl ${noPadding ? '' : 'px-3 py-2'} flex-1`}>
                 {children}
             </section>
         </section>

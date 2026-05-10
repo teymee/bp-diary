@@ -53,15 +53,16 @@ export const getLevelImage = (sys: number, dia: number, pulse: number) => {
   if (sys < 120 && dia < 80) {
     return normal
   }
-  if (sys >= 120 && sys < 130 && dia < 85) {
+  if (sys >= 120 && sys < 130 && dia < 80) {
     return elevated
+  }
+   if (sys >= 145 ) {
+    return hbp2
   }
   if ((sys >= 130 && sys < 140) || (dia >= 80 && dia < 90)) {
     return hbp1
   }
-  if (sys >= 140 || dia >= 90) {
-    return hbp2
-  }
+ 
 }
 
 export const getPulseLevelColor = (pulse: number): { textColor: string; bgColor: string; text: string } => {

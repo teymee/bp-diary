@@ -86,6 +86,7 @@ export default function ManualReading() {
     }
 
     setIsSubmitting(true)
+
     const data = {
       user_id: session.user.id,
       systolic,
@@ -94,6 +95,57 @@ export default function ManualReading() {
       recorded_at: recordedAt.toISOString(),
       note,
     }
+
+    // 🚨 Streak logic 
+    const { data: streakData, error: streakError } = await supabase.from('streaks').select('current_streak, longest_streak, last_recorded_at').eq('user_id', session.user.id).maybeSingle()
+
+    if (streakError) {
+      setIsSubmitting(false)
+      showToast('error', 'Streak error', 'Failed to update streak. Reading will still be saved.')
+      console.error('Streak fetch error:', streakError)
+    } else {
+      const today = new Date()
+      if (streakData === null) {
+        // No streak record, create one
+        const { error: createError } = await supabase.from('streaks').insert({ user_id: session.user.id, current_streak: 1, longest_streak: 1, last_recorded_at: today.toISOString() })
+        if (createError) {
+          setIsSubmitting(false)
+          showToast('error', 'Streak error', 'Failed to create streak. Reading will still be saved.')
+          console.error('Streak create error:', createError)
+        }
+      }
+      else {
+        // Update existing streak
+        const lastRecordedAt = new Date(streakData.last_recorded_at)
+        const lastRecordISO = lastRecordedAt.toISOString().split('T')[0]
+        const todayISO = today.toISOString().split('T')[0]
+        if (lastRecordISO !== todayISO) {
+
+          const diffInDays = Math.floor((today.getTime() - lastRecordedAt.getTime()) / (1000 * 60 * 60 * 24))
+          let currentStreak = streakData.current_streak
+          let longestStreak = streakData.longest_streak
+
+          if (diffInDays === 1) {
+            currentStreak += 1
+            if (currentStreak > longestStreak) {
+              longestStreak = currentStreak
+            }
+          } else if (diffInDays > 1) {
+            currentStreak = 1
+          }
+          const { error: updateError } = await supabase.from('streaks').update({ current_streak: currentStreak, longest_streak: longestStreak, last_recorded_at: today.toISOString() }).eq('user_id', session.user.id)
+          if (updateError) {
+            setIsSubmitting(false)
+            showToast('error', 'Streak error', 'Failed to update streak. Reading will still be saved.')
+            console.error('Streak update error:', updateError)
+          }
+        }
+
+
+
+      }
+    }
+
     const { error } = await supabase.from('readings').insert(data)
 
     setIsSubmitting(false)

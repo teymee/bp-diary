@@ -42,7 +42,7 @@ export default function Login() {
             if (!error) {
                 setShowOTP(true)
                 setFeedback('A one-time code has been sent to your email.')
-                e.currentTarget.reset()
+                e.currentTarget?.reset()
             } else {
                 setIsError(true)
                 setFeedback(error.message)

@@ -111,7 +111,7 @@ export default function HeartComponent() {
             {
                 !pathName.includes('login') && <div>
                     <h3 className='font-semibold text-base'>Welcome <span className='text-primary-200 font-bold'>My Account</span></h3>
-                    <h1 className='font-bold text-[36px]'>Overview Of Your Health</h1>
+                    <h1 className='text-3xl font-bold sm:text-4xl'>Overview Of Your Health</h1>
                 </div>
             }
 

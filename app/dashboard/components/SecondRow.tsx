@@ -16,7 +16,7 @@ export default function SecondRow({ readings }: { readings: ReadingType[] }) {
 
             <section className='h-full w-full  '>
                 <OverviewCard image={recentReading} title="Recent Readings">
-                    <section className='text-white-200 text-sm py-10 px-4 max-h-100 overflow-y-scroll'>
+                    <section className='text-white-200 text-xs py-10 px-4 max-h-100 overflow-y-scroll'>
                         {
                             !latestReading || latestReading.length === 0 && (
                                 <section className='flex flex-col items-center justify-center gap-y-3 h-full'>
@@ -36,7 +36,7 @@ export default function SecondRow({ readings }: { readings: ReadingType[] }) {
                                 {
                                     latestReading.map((reading) => {
                                         return (
-                                            <ReadingRow key={reading.id} reading={reading} />
+                                            <ReadingRow key={reading.id} reading={reading} compact={true} />
 
                                         )
                                     })

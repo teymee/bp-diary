@@ -5,7 +5,7 @@ import ReadingTips from './components/ReadingTips'
 export default function AddReading() {
   return (
     <section>
-      <div><h1 className='text-[36px] font-semibold'>Add Reading</h1></div>
+      <div><h1 className='text-3xl font-semibold sm:text-4xl'>Add Reading</h1></div>
 
 
       <section className='mt-4 flex items-start  gap-4 [ lg:flex-row flex-col ]'>

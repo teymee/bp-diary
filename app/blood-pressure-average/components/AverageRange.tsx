@@ -6,9 +6,14 @@ import normalTag from "@/assets/images/normal-tag.svg"
 import trendUp from "@/assets/images/trend-up.svg"
 import trendDown from "@/assets/images/trend-down.svg"
 import whiteTrend from "@/assets/images/white-trend.svg"
+import { ReadingType } from '@/utils/types'
+import { getLevelImage } from '@/utils'
 
-export default function AverageRange() {
+
+export default function AverageRange({ readings }: { readings: ReadingType[] | null }) {
     const latestData = null
+    const averageSystolic = readings && readings.length > 0 ? Math.round(readings.reduce((sum, r) => sum + r.systolic, 0) / readings.length) : null
+    const averageDiastolic = readings && readings.length > 0 ? Math.round(readings.reduce((sum, r) => sum + r.diastolic, 0) / readings.length) : null
     return (
         <section className='space-y-4'>
             <OverviewCard image={waveTriangle} title="Average Reading">
@@ -20,19 +25,21 @@ export default function AverageRange() {
                                     <div className=' rounded-lg px-3 '>
                                         <p className='text-base font-semibold'>Average BP:</p>
                                         <div className='flex items-center gap-x-2'>
-                                            <p className='text-3xl font-semibold'>0 </p>
-                                            <span className=' font-medium! text-base'>/ 0 mmhg</span>
+                                            <p className='text-3xl font-semibold'>{averageSystolic}</p>
+                                            <span className=' font-medium! text-base'>/ {averageDiastolic} mmhg</span>
                                         </div>
                                     </div>
 
                                     <div className=' rounded-lg px-3 '>
                                         <p className='text-base font-semibold'>Total Readings:</p>
                                         <div className='flex items-center gap-x-2'>
-                                            <p className='text-3xl  font-semibold'>0 </p>
+                                            <p className='text-3xl  font-semibold'>{readings ? readings.length : 0} </p>
                                         </div>
                                     </div>
 
-                                    <Image src={normalTag} alt="Normal tag" />
+
+                                    <Image src={getLevelImage(averageSystolic, averageDiastolic)} alt="Blood pressure level" />
+
                                 </section>
 
 

@@ -171,8 +171,8 @@ export default function ManualReading() {
       >
         <section className='p-4'>
           <form onSubmit={handleAddReading} className='space-y-4'>
-            <section className='flex items-center gap-x-4 justify-between'>
-              <div className='space-y-3 w-1/2'>
+            <section className='flex items-center  lg:justify-between  gap-4 [ lg:flex-row flex-col ]'>
+              <div className='space-y-3 lg:w-1/2 w-full'>
                 <label htmlFor="systolic" className='labelStyle'>Systolic (Top mmHg)</label>
                 <input type="number"
                   name="systolic"
@@ -181,7 +181,7 @@ export default function ManualReading() {
                   placeholder='120' />
               </div>
 
-              <div className='space-y-3 w-1/2'>
+              <div className='space-y-3 lg:w-1/2 w-full'>
                 <label htmlFor="diastolic" className='labelStyle'>Diastolic (Bottom mmHg)</label>
                 <input type="number"
                   name="diastolic"

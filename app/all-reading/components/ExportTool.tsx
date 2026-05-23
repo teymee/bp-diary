@@ -34,21 +34,23 @@ export default function ExportTool() {
     }
 
     return (
-        <section className='space-y-4'>
+        <section className='space-y-3 md:space-y-4'>
 
             <OverviewCard image={share} title="Export Data">
 
-                <section className='space-y-2 py-4 px-2'>
-                    <p>Choose a format to export your blood pressure data:</p>
+                <section className='space-y-3 px-1 py-3 sm:px-2 sm:py-4'>
+                    <p className='text-sm text-gray-600 dark:text-white-200 sm:text-base'>Choose a format to export your blood pressure data:</p>
 
                     <section>
                         {
                             exportTool.map((tool) => (
-                                <section key={tool.type} className='flex items-center gap-x-2 py-3 px-3 hover:bg-gray-200 dark:hover:bg-gray-700 rounded-lg cursor-pointer'
+                                <section
+                                    key={tool.type}
+                                    className='flex cursor-pointer flex-col items-start gap-3 rounded-lg px-3 py-3 hover:bg-gray-200 dark:hover:bg-gray-700 sm:flex-row sm:items-center'
                                     onClick={() => handleExport(tool.type)}>
-                                    <Image src={tool.icon} alt={`${tool.title} icon`} width={40} height={40} />
+                                    <Image src={tool.icon} alt={`${tool.title} icon`} width={40} height={40} className='h-8 w-8 sm:h-10 sm:w-10' />
                                     <div className='space-y-1'>
-                                        <h3 className='font-semibold text-gray-700 dark:text-foreground'>{tool.title}</h3>
+                                        <h3 className='text-sm font-semibold text-gray-700 dark:text-foreground sm:text-base'>{tool.title}</h3>
                                         <p className='text-sm text-gray-500 dark:text-white-200'>{tool.desc}</p>
                                     </div>
                                 </section>
@@ -60,12 +62,12 @@ export default function ExportTool() {
             </OverviewCard>
 
             <OverviewCard >
-                <section className='space-y-2 py-4'>
+                <section className='space-y-2 py-3 sm:py-4'>
                     <div className='flex items-center gap-x-2'>
                         <Image src={Lock} alt="Information" width={25} height={25} />
-                        <h3 className='font-semibold text-gray-700 dark:text-foreground'>Your Privacy Matters</h3>
+                        <h3 className='text-sm font-semibold text-gray-700 dark:text-foreground sm:text-base'>Your Privacy Matters</h3>
                     </div>
-                    <p className='text-sm pl-8 text-gray-500 dark:text-white-200'>All your blood pressure data is stored locally on your device. When you  export data, files are generated and downloaded directly to your  computer. No data is sent to external servers. Remember to keep exported files secure and only share them with trusted healthcare providers.</p>
+                    <p className='pl-0 text-[13px] leading-6 text-gray-500 dark:text-white-200 sm:pl-8 sm:text-sm'>All your blood pressure data is stored locally on your device. When you export data, files are generated and downloaded directly to your computer. No data is sent to external servers. Remember to keep exported files secure and only share them with trusted healthcare providers.</p>
                 </section>
 
 

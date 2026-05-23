@@ -214,7 +214,7 @@ export default function FirstRow({ readings }: { readings: ReadingType[] }) {
     }, [userId])
 
     return (
-        <section className='grid grid-cols-3 items-stretch gap-x-4'>
+        <section className='grid [ lg:grid-cols-3 grid-cols-1 ] items-stretch gap-4'>
 
             {/* 🚨 GOALS AND LATEST READING  */}
             <section className='h-full'>

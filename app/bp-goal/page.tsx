@@ -48,14 +48,14 @@ export default function BPGoal() {
             {loading && <Loader />}
 
             {
-                !loading && (<section className='mt-4 flex items-start gap-x-4'>
-                    <section className='w-[60%]'>
+                !loading && (<section className='mt-4 flex items-start  gap-4 [ lg:flex-row flex-col ]'>
+                    <section className='lg:w-[60%] w-full'>
                         {
                             goal ? <ShowGoal goal={goal} /> : <AddGoal />
                         }
                     </section>
 
-                    <section className='w-[40%]'>
+                    <section className='lg:w-[40%]'>
                         <GoalInfo />
                     </section>
                 </section>)

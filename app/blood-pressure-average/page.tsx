@@ -60,12 +60,12 @@ export default function BloodPressureAverage() {
 
             {
                 !loading && (
-                    <section className='mt-4 flex flex-1  items-stretch gap-x-4'>
-                        <section className='w-[70%] h-full '>
+                    <section className='mt-4 flex flex-1 [ lg:flex-row flex-col ]  items-stretch gap-4'>
+                        <section className='lg:w-[70%] h-full '>
                             <AverageGraphTrend readings={readings} />
                         </section>
 
-                        <section className='w-[30%] h-full '>
+                        <section className='lg:w-[30%] h-full '>
                             <AverageRange readings={readings} />
                         </section>
 

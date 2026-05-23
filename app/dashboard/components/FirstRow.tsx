@@ -227,15 +227,15 @@ export default function FirstRow({ readings }: { readings: ReadingType[] }) {
                                         <section className='space-y-2'>
                                             <div className='bg-white-400 py-3 rounded-lg px-3 '>
                                                 <div className='flex items-center gap-x-2'>
-                                                    <p className='text-3xl text-black font-semibold'>{systolic} </p>
-                                                    <span className='text-white-200 font-medium! text-base'>/ {diastolic} mmhg</span>
+                                                    <p className='text-2xl text-black font-semibold'>{systolic} </p>
+                                                    <span className='text-white-200 font-medium! text-sm'>/ {diastolic} mmhg</span>
                                                 </div>
                                             </div>
 
                                             <div className='bg-white-400 py-3 rounded-lg px-3 '>
                                                 <div className='flex items-center gap-x-2'>
-                                                    <p className='text-3xl text-black font-semibold'>{pulse} </p>
-                                                    <span className='text-white-200 font-medium! text-base'>bpm</span>
+                                                    <p className='text-2xl text-black font-semibold'>{pulse} </p>
+                                                    <span className='text-white-200 font-medium! text-sm'>bpm</span>
                                                 </div>
                                             </div>
 
@@ -244,7 +244,7 @@ export default function FirstRow({ readings }: { readings: ReadingType[] }) {
                                         <section className='space-y-2'>
                                             <Image src={getLevelImage(systolic, diastolic, pulse)} alt="Blood pressure level" />
 
-                                            <div className='flex justify-between items-center text-[11px]'>
+                                            <div className='flex justify-between items-center text-xs'>
                                                 <p>Last Updated</p>
                                                 <p>{formatDate(recorded_at, "MMM Do, YYYY, hh:mma")}</p>
                                             </div>
@@ -272,15 +272,15 @@ export default function FirstRow({ readings }: { readings: ReadingType[] }) {
                                                 <section className='space-y-2'>
                                                     <div className='bg-white-400 py-3 rounded-lg px-3 '>
                                                         <div className='flex items-center gap-x-2'>
-                                                            <p className='text-3xl text-black font-semibold'>{goal.systolic} </p>
-                                                            <span className='text-white-200 font-medium! text-base'>/ {goal.diastolic} mmhg</span>
+                                                            <p className='text-2xl text-black font-semibold'>{goal.systolic} </p>
+                                                            <span className='text-white-200 font-medium! text-sm'>/ {goal.diastolic} mmhg</span>
                                                         </div>
                                                     </div>
 
                                                     <div className='bg-white-400 py-3 rounded-lg px-3 '>
                                                         <div className='flex items-center gap-x-2'>
-                                                            <p className='text-3xl text-black font-semibold'>{goal.pulse} </p>
-                                                            <span className='text-white-200 font-medium! text-base'>bpm</span>
+                                                            <p className='text-2xl text-black font-semibold'>{goal.pulse} </p>
+                                                            <span className='text-white-200 font-medium! text-sm'>bpm</span>
                                                         </div>
                                                     </div>
 
@@ -289,7 +289,7 @@ export default function FirstRow({ readings }: { readings: ReadingType[] }) {
                                                 <section className='space-y-2'>
                                                     <Image src={getLevelImage(goal.systolic, goal.diastolic, goal.pulse)} alt="Blood pressure level" />
 
-                                                    <div className='flex justify-between items-center text-base'>
+                                                    <div className='flex justify-between items-center text-sm'>
                                                         <p>Due date by:  {formatDate(goal.end_date)}</p>
                                                     </div>
                                                 </section>
@@ -317,7 +317,7 @@ export default function FirstRow({ readings }: { readings: ReadingType[] }) {
                                     <section className='flex flex-col items-center justify-center gap-y-3 h-full'>
                                         <Image src={empty} alt="No data available" />
                                         <div className='text-center'>
-                                            <h2 className='text-lg font-medium'>No readings recorded</h2>
+                                            <h2 className='text-base font-medium'>No readings recorded</h2>
                                             <p>Recorded readings will appear here</p>
                                         </div>
                                     </section>
@@ -329,8 +329,8 @@ export default function FirstRow({ readings }: { readings: ReadingType[] }) {
                                     <section className='space-y-4 pt-4'>
                                         <section className='space-y-4 pl-3'>
                                             <div className='flex items-center gap-x-2'>
-                                                <p className='text-3xl font-semibold'>{averageSystolic} </p>
-                                                <span className='text-white-200 font-medium! text-base'>/ {averageDiastolic} mmhg</span>
+                                                <p className='text-2xl font-semibold'>{averageSystolic} </p>
+                                                <span className='text-white-200 font-medium! text-sm'>/ {averageDiastolic} mmhg</span>
                                             </div>
 
                                             <Image src={getLevelImage(averageSystolic, averageDiastolic, averagePulse ?? 0)} alt="Blood pressure level" className='' />
@@ -353,7 +353,7 @@ export default function FirstRow({ readings }: { readings: ReadingType[] }) {
                                     <section className='flex flex-col items-center justify-center gap-y-3 h-full'>
                                         <Image src={empty} alt="No data available" />
                                         <div className='text-center'>
-                                            <h2 className='text-lg font-medium'>No readings recorded</h2>
+                                            <h2 className='text-base font-medium'>No readings recorded</h2>
                                             <p>Recorded readings will appear here</p>
                                         </div>
                                     </section>
@@ -364,12 +364,12 @@ export default function FirstRow({ readings }: { readings: ReadingType[] }) {
                                     <section className=' flex  pt-4 justify-betweeen  flex-col h-full gap-y-4'>
                                         <section className='pl-4 space-y-4'>
                                             <div className='flex items-center gap-x-2'>
-                                                <p className='text-3xl font-semibold' style={{ color: pulseLevel?.textColor }}>{averagePulse} </p>
-                                                <span className='text-white-200 font-medium! text-base'>bpm</span>
+                                                <p className='text-2xl font-semibold' style={{ color: pulseLevel?.textColor }}>{averagePulse} </p>
+                                                <span className='text-white-200 font-medium! text-sm'>bpm</span>
                                             </div>
 
                                             <div className='flex items-center gap-x-2'>
-                                                <p className='text-sm px-2 rounded' style={{ color: pulseLevel?.textColor, backgroundColor: pulseLevel?.bgColor }}> {pulseLevel?.text}</p>
+                                                <p className='text-xs px-2 rounded' style={{ color: pulseLevel?.textColor, backgroundColor: pulseLevel?.bgColor }}> {pulseLevel?.text}</p>
                                             </div>
                                         </section>
                                         <section>
@@ -394,7 +394,7 @@ export default function FirstRow({ readings }: { readings: ReadingType[] }) {
                         ) : (
                             <div className='flex gap-y-2 flex-col items-center justify-center'>
                                 <Image src={streakBadge} alt="Streak Badge" width={50} height={50} />
-                                <p className='text-[20px] font-bold'>{currentStreak} {currentDayLabel} Streak</p>
+                                <p className='text-lg font-bold'>{currentStreak} {currentDayLabel} Streak</p>
                                 <p className='text-sm'>Best: {longestStreak} {longestDayLabel}</p>
                             </div>
                         )}
@@ -411,7 +411,7 @@ export default function FirstRow({ readings }: { readings: ReadingType[] }) {
                                         <section className='flex flex-col items-center justify-center gap-y-3 h-full'>
                                             <Image src={empty} alt="No data available" />
                                             <div className='text-center'>
-                                                <h2 className='text-lg font-medium'>No reminders Set</h2>
+                                                <h2 className='text-base font-medium'>No reminders Set</h2>
                                                 <p>Add a reminder to get notified</p>
                                             </div>
 

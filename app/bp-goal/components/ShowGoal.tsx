@@ -38,10 +38,10 @@ export default function ShowGoal({ goal }: ShowGoalProp) {
 
                     <section className='space-y-4'>
                         <div className='flex gap-x-2 items-center font-semibold bg-white-100 text-black rounded-lg pl-4 py-1'>
-                            <h1 className='text-[32px]'>{goal.systolic} / {goal.diastolic}</h1> <span className='text-base'>mmhg</span>
+                            <h1 className='text-2xl sm:text-3xl'>{goal.systolic} / {goal.diastolic}</h1> <span className='text-base'>mmhg</span>
                         </div>
                         <div className='flex gap-x-2 items-center font-semibold bg-white-100 text-black rounded-lg pl-4 py-1'>
-                            <h1 className='text-[32px]'>{goal.pulse} </h1> <span className='text-base'>bpm</span>
+                            <h1 className='text-2xl sm:text-3xl'>{goal.pulse} </h1> <span className='text-base'>bpm</span>
                         </div>
                         <p>Due date by:  {formatDate(goal.end_date)}</p>
                     </section>

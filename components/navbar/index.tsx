@@ -16,7 +16,7 @@ import { useAuth } from "@/providers/AuthProvider"
 export default function Navbar() {
   const router = useRouter()
   const pathName = usePathname()
-  const { session } = useAuth()
+  const { session, sessionLoader } = useAuth()
   const { theme, setTheme } = useTheme()
   const isDark = theme === "dark"
 
@@ -36,7 +36,7 @@ export default function Navbar() {
   // eslint-disable-next-line react-hooks/set-state-in-effect
   useEffect(() => setMounted(true), [])
 
-  if (!mounted) return null
+  if (!mounted || sessionLoader) return null
 
   const routes = [
     {
@@ -71,7 +71,7 @@ export default function Navbar() {
 
         {/* 🚨 NavLinks  */}
 
-        <section className="hidden items-center gap-x-4 md:flex">
+        {session && <section className="hidden items-center gap-x-4 md:flex">
 
           {
             routes.map((route) => (
@@ -83,7 +83,7 @@ export default function Navbar() {
 
 
 
-        </section>
+        </section>}
 
         {/*  */}
 
@@ -128,26 +128,30 @@ export default function Navbar() {
               className={`pointer-events-none inline-flex h-5 w-5 transform items-center justify-center rounded-full bg-white shadow-lg ring-0 transition-transform duration-300 ease-in-out ${isDark ? "translate-x-8" : "translate-x-1"
                 }`}
             >
-              <span className="text-[11px] leading-none select-none">
+              <span className="text-xs leading-none select-none">
                 {isDark ? "🌙" : "☀️"}
               </span>
             </span>
           </button>
 
 
-          <div className="flex gap-x-2 items-center text-sm font-medium rounded-full px-3 py-1 bg-white-100 [ dark:bg-black ] ">
-            <p>My Account</p>
-            <Image src={avatar} alt="Avatar" width={30} height={30} className="rounded-full" />
-          </div>
-
-          <Link href="/add-reading">
-
-            <div className="bg-primary-200 cursor-pointer px-3 flex items-center gap-x-2 rounded-full text-primary-100 py-1.5">
-
-              <Image src={plus} alt="Avatar" width={25} height={25} className="rounded-full" />
-              <p>Add Reading</p>
+          {session && (
+            <div className="flex gap-x-2 items-center text-sm font-medium rounded-full px-3 py-1 bg-white-100 [ dark:bg-black ] ">
+              <p>My Account</p>
+              <Image src={avatar} alt="Avatar" width={30} height={30} className="rounded-full" />
             </div>
-          </Link>
+          )}
+
+          {session && (
+            <Link href="/add-reading">
+
+              <div className="bg-primary-200 cursor-pointer px-3 flex items-center gap-x-2 rounded-full text-primary-100 py-1.5">
+
+                <Image src={plus} alt="Avatar" width={25} height={25} className="rounded-full" />
+                <p>Add Reading</p>
+              </div>
+            </Link>
+          )}
 
           {session && (
             <button
@@ -201,35 +205,37 @@ export default function Navbar() {
               className={`pointer-events-none inline-flex h-5 w-5 transform items-center justify-center rounded-full bg-white shadow-lg ring-0 transition-transform duration-300 ease-in-out ${isDark ? "translate-x-8" : "translate-x-1"
                 }`}
             >
-              <span className="text-[11px] leading-none select-none">
+              <span className="text-xs leading-none select-none">
                 {isDark ? "🌙" : "☀️"}
               </span>
             </span>
           </button>
 
-          <button
-            type="button"
-            aria-label="Toggle menu"
-            aria-expanded={isMobileMenuOpen}
-            onClick={() => setIsMobileMenuOpen((prev) => !prev)}
-            className="inline-flex h-10 w-10 items-center justify-center rounded-lg border border-white-300 text-primary-200 dark:border-black-300 dark:text-white-100"
-          >
-            {isMobileMenuOpen ? (
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="h-5 w-5">
-                <path d="M6 6l12 12M18 6L6 18" />
-              </svg>
-            ) : (
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="h-5 w-5">
-                <path d="M3 6h18M3 12h18M3 18h18" />
-              </svg>
-            )}
-          </button>
+          {session && (
+            <button
+              type="button"
+              aria-label="Toggle menu"
+              aria-expanded={isMobileMenuOpen}
+              onClick={() => setIsMobileMenuOpen((prev) => !prev)}
+              className="inline-flex h-10 w-10 items-center justify-center rounded-lg border border-white-300 text-primary-200 dark:border-black-300 dark:text-white-100"
+            >
+              {isMobileMenuOpen ? (
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="h-5 w-5">
+                  <path d="M6 6l12 12M18 6L6 18" />
+                </svg>
+              ) : (
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="h-5 w-5">
+                  <path d="M3 6h18M3 12h18M3 18h18" />
+                </svg>
+              )}
+            </button>
+          )}
         </section>
 
         {/*  */}
       </section>
 
-      {isMobileMenuOpen && (
+      {session && isMobileMenuOpen && (
         <section className="wrapper mt-2 space-y-4 rounded-xl border border-white-300 bg-white p-3 dark:border-black-300 dark:bg-black-200 md:hidden">
           <section className="grid gap-2">
             {routes.map((route) => (
@@ -274,7 +280,7 @@ export default function Navbar() {
       )}
 
 
-      <AddReading isModalOpen={isModalOpen} setIsModalOpen={setIsModalOpen} />
+      {session && <AddReading isModalOpen={isModalOpen} setIsModalOpen={setIsModalOpen} />}
     </nav>
   )
 }

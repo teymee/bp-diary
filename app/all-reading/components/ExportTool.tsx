@@ -67,7 +67,7 @@ export default function ExportTool() {
                         <Image src={Lock} alt="Information" width={25} height={25} />
                         <h3 className='text-sm font-semibold text-gray-700 dark:text-foreground sm:text-base'>Your Privacy Matters</h3>
                     </div>
-                    <p className='pl-0 text-[13px] leading-6 text-gray-500 dark:text-white-200 sm:pl-8 sm:text-sm'>All your blood pressure data is stored locally on your device. When you export data, files are generated and downloaded directly to your computer. No data is sent to external servers. Remember to keep exported files secure and only share them with trusted healthcare providers.</p>
+                    <p className='pl-0 text-xs leading-6 text-gray-500 dark:text-white-200 sm:pl-8 sm:text-sm'>All your blood pressure data is stored locally on your device. When you export data, files are generated and downloaded directly to your computer. No data is sent to external servers. Remember to keep exported files secure and only share them with trusted healthcare providers.</p>
                 </section>
 
 

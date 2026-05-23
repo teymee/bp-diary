@@ -65,6 +65,11 @@
   --background: #f3f3f3;
   --foreground: #171717;
 }
+
+html {
+  font-size: clamp(14px, 0.2vw + 13.5px, 17px);
+}
+
 /* .roboto {
   font-family: "Roboto", sans-serif;
   font-optical-sizing: auto;

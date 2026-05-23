@@ -17,7 +17,7 @@ import { useAuth } from '@/providers/AuthProvider'
 import { supabase } from '@/lib/supabase/client'
 
 import target from "@/assets/images/target.svg"
-import { GoalType, ReadingType } from '@/utils/types'
+import { GoalType, ReadingType, StreakType } from '@/utils/types'
 import Loader from '@/components/UI/Loader'
 const ReactApexChart = dynamic(() => import("react-apexcharts"), { ssr: false })
 
@@ -164,13 +164,20 @@ export default function FirstRow({ readings }: { readings: ReadingType[] }) {
     }
     const [goal, setGoal] = useState<GoalType | null>(null)
     const [isGoalLoading, setIsGoalLoading] = useState(true)
+    const [isStreakLoading, setIsStreakLoading] = useState(true)
+    const [streak, setStreak] = useState<StreakType | null>(null)
     const { userId } = useAuth()
+    const currentStreak = streak?.current_streak ?? 0
+    const longestStreak = streak?.longest_streak ?? 0
+    const currentDayLabel = currentStreak < 2 ? 'Day' : 'Days'
+    const longestDayLabel = longestStreak < 2 ? 'day' : 'days'
 
     useEffect(() => {
         const fetchGoal = async () => {
 
             if (!userId) return
             setIsGoalLoading(true)
+
             const { data, error } = await supabase.from('goals').select('*')
                 .eq('user_id', userId)
                 .order('created_at', { ascending: false })
@@ -183,16 +190,31 @@ export default function FirstRow({ readings }: { readings: ReadingType[] }) {
             }
             setIsGoalLoading(false)
         }
+
+        const fetchStreak = async () => {
+            if (!userId) return
+            const { data, error } = await supabase.from('streaks').select('*').eq('user_id', userId).maybeSingle()
+            if (error) {
+                console.error(error.message, error.details, error.hint)
+                return
+            } else {
+                setStreak(data)
+                console.log("Streak data:", data)
+            }
+            setIsStreakLoading(false)
+        }
+        fetchStreak()
         fetchGoal()
 
 
         return () => {
             setGoal(null)
+            setStreak(null)
         }
     }, [userId])
 
     return (
-        <section className='grid grid-cols-3 items-stretch gap-x-4'>
+        <section className='grid [ lg:grid-cols-3 grid-cols-1 ] items-stretch gap-4'>
 
             {/* 🚨 GOALS AND LATEST READING  */}
             <section className='h-full'>
@@ -367,11 +389,15 @@ export default function FirstRow({ readings }: { readings: ReadingType[] }) {
                 <section className='flex flex-col gap-4 h-full justify-between'>
                     {/* 🚨 Streak  */}
                     <section className='border h-[30%] border-white-300 dark:border-black-300 rounded-xl px-4 py-6 flex-1 flex items-center justify-center [ bg-white  dark:bg-black-200 ]'>
-                        <div className='flex gap-y-2 flex-col items-center justify-center'>
-                            <Image src={streakBadge} alt="Streak Badge" width={50} height={50} />
-                            <p className='text-[20px] font-bold'>3 Days Streak</p>
-                            <p className='text-sm'>Best: 30 days</p>
-                        </div>
+                        {isStreakLoading ? (
+                            <Loader />
+                        ) : (
+                            <div className='flex gap-y-2 flex-col items-center justify-center'>
+                                <Image src={streakBadge} alt="Streak Badge" width={50} height={50} />
+                                <p className='text-[20px] font-bold'>{currentStreak} {currentDayLabel} Streak</p>
+                                <p className='text-sm'>Best: {longestStreak} {longestDayLabel}</p>
+                            </div>
+                        )}
                     </section>
 
 

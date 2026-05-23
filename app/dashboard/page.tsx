@@ -40,25 +40,25 @@ export default function Dashboard() {
     }, [userId])
 
     return (
-        <section className='flex flex-col items-stretch gap-y-6 h-full'>
+        <section className='flex h-full flex-col items-stretch gap-y-4 md:gap-y-6'>
 
             {
                 loading && <Loader />
             }
 
             {
-                !loading && readings && (<section className=' relative flex flex-1 items-start gap-x-16 '>
-                    <section className="w-[35%] sticky top-24 self-start h-fit">
+                !loading && readings && (<section className='relative flex flex-1 flex-col items-stretch gap-4 lg:flex-row lg:items-start lg:gap-10 xl:gap-16'>
+                    <section className='w-full lg:sticky lg:top-24 lg:w-[35%] lg:self-start lg:h-fit'>
                         <HeartComponent />
                     </section>
 
-                    <section className="w-[65%] flex flex-col">
-                        <section className=' flex flex-col h-full'>
+                    <section className='w-full lg:w-[65%] lg:mt-0 mt-24'>
+                        <section className='flex h-full flex-col'>
 
                             <section className='space-y-3'>
                                 <FirstRow readings={readings} />
                                 <section className='flex-1'>
-                                    <SecondRow  readings={readings} />
+                                    <SecondRow readings={readings} />
                                 </section>
                             </section>
 

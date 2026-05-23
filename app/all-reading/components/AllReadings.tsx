@@ -61,7 +61,7 @@ export default function AllReadings() {
 
                 {
                     !loading && readings && (
-                        <section className="py-4 ">
+                        <section className="py-4  overflow-y-scroll lg:h-125 h-100">
                             {
                                 readings.length > 0 && (
                                     <section className="space-y-4">

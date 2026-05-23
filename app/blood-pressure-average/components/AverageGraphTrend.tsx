@@ -6,48 +6,14 @@ import Image from "next/image";
 import empty from "@/assets/images/empty.svg"
 import bpAverage from "@/assets/images/BP-average.svg"
 
-import { supabase } from '@/lib/supabase/client'
-import { useEffect, useState } from 'react'
 import { ReadingType } from '@/utils/types'
-import { useAuth } from '@/providers/AuthProvider'
-import Loader from '@/components/UI/Loader'
 import { ApexOptions } from "apexcharts";
 import dynamic from "next/dynamic";
 
 const ReactChart = dynamic(() => import("react-apexcharts"), { ssr: false });
 
 export default function AverageGraphTrend({ readings }: { readings: ReadingType[] | null }) {
-    // const { userId } = useAuth()
 
-    // useEffect(() => {
-
-    //     const fetchData = async () => {
-    //         if (!userId) {
-    //             setReadings([])
-    //             setLoading(false)
-    //             return
-    //         }
-
-    //         setLoading(true)
-
-    //         const { data, error } = await supabase.from("readings").select("*").eq('user_id', userId).order("created_at", { ascending: false })
-    //         if (error) {
-    //             console.error("Error fetching readings:", error)
-    //             setReadings([])
-    //         } else {
-    //             setReadings(data)
-    //         }
-
-    //         setLoading(false)
-
-    //     }
-    //     fetchData()
-
-
-    //     return () => {
-    //         setReadings(null)
-    //     }
-    // }, [userId])
 
     const sortedReadings = [...(readings ?? [])].reverse()
 
@@ -131,6 +97,9 @@ export default function AverageGraphTrend({ readings }: { readings: ReadingType[
         xaxis: {
             categories,
             labels: {
+                hideOverlappingLabels: true,
+                trim: true,
+                rotate: 0,
                 style: {
                     colors: '#A9B0BD',
                     fontSize: '12px',
@@ -193,6 +162,21 @@ export default function AverageGraphTrend({ readings }: { readings: ReadingType[
         },
         responsive: [
             {
+                breakpoint: 1024,
+                options: {
+                    chart: {
+                        height: 320,
+                    },
+                    xaxis: {
+                        labels: {
+                            style: {
+                                fontSize: '11px',
+                            },
+                        },
+                    },
+                },
+            },
+            {
                 breakpoint: 768,
                 options: {
                     chart: {
@@ -201,9 +185,51 @@ export default function AverageGraphTrend({ readings }: { readings: ReadingType[
                     markers: {
                         size: 3,
                     },
+                    legend: {
+                        position: 'bottom',
+                        horizontalAlign: 'center',
+                    },
+                    annotations: {
+                        xaxis: [],
+                        yaxis: [],
+                    },
+                    xaxis: {
+                        labels: {
+                            rotate: -45,
+                            trim: true,
+                            style: {
+                                fontSize: '10px',
+                            },
+                        },
+                    },
                     yaxis: {
                         labels: {
                             formatter: (value: number) => `${Math.round(value)}`,
+                            style: {
+                                fontSize: '10px',
+                            },
+                        },
+                    },
+                },
+            },
+            {
+                breakpoint: 480,
+                options: {
+                    chart: {
+                        height: 250,
+                    },
+                    markers: {
+                        size: 2,
+                    },
+                    stroke: {
+                        width: 2,
+                    },
+                    grid: {
+                        padding: {
+                            top: 4,
+                            right: 4,
+                            left: -4,
+                            bottom: 0,
                         },
                     },
                 },
@@ -220,7 +246,7 @@ export default function AverageGraphTrend({ readings }: { readings: ReadingType[
                         readings?.length === 0
                         && (
                             <section className='flex flex-col items-center justify-center gap-y-3 h-full'>
-                                <Image src={empty} alt="No data available" />
+                                <Image src={empty} alt="No data available" className='h-auto w-24 sm:w-auto' />
                                 <div className='text-center'>
                                     <h2 className='text-lg font-medium'>No readings recorded</h2>
                                     <p>Recorded readings will appear here</p>
@@ -232,8 +258,8 @@ export default function AverageGraphTrend({ readings }: { readings: ReadingType[
 
                     {
                         readings && readings.length > 0 && (
-                            <section className="h-full w-full flex flex-col items-center justify-center py-4">
-                                <section className="h-[90%] w-full">
+                            <section className="flex h-full w-full flex-col items-stretch justify-center py-2 sm:py-4">
+                                <section className="h-62.5 w-full sm:h-75 md:h-90 lg:h-105">
                                     <ReactChart options={chartOptions} series={series} type="line" height="100%" width="100%" />
                                 </section>
                             </section>

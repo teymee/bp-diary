@@ -6,22 +6,22 @@ import { ReadingType } from "@/utils/types"
 
 
 export default function ReadingRow({ reading }: { reading: ReadingType }) {
-    const { diastolic, id, note, pulse, recorded_at, source, systolic, user_id } = reading
+    const { diastolic, note, pulse, recorded_at, source, systolic } = reading
 
     return (
-        <section  className="flex border border-white-400 dark:border-black-400 py-2 px-4 rounded-lg justify-between items-center text-white-200">
-            <div className="space-y-2">
-                <p className="font-semibold text-sm ">{formatDate(recorded_at, "MMM Do, YYYY, hh:mma")}</p>
-                <section className="flex text-black dark:text-white-100 gap-x-4 items-center">
-                    <h1 className="text-2xl font-bold  flex items-center gap-x-1 ">{systolic} / {diastolic} <span className="text-white-200 text-sm">mmhg</span></h1>
-                    <p className="text-2xl font-bold  flex items-center gap-x-1 " >{pulse} <span className="text-white-200 text-sm">bpm</span></p>
+        <section className="flex flex-col gap-3 rounded-lg border border-white-400 px-4 py-3 text-white-200 dark:border-black-400 sm:flex-row sm:items-center sm:justify-between">
+            <div className="min-w-0 space-y-2">
+                <p className="text-sm font-semibold">{formatDate(recorded_at, "MMM Do, YYYY, hh:mma")}</p>
+                <section className="flex flex-wrap items-center gap-3 text-black dark:text-white-100 sm:gap-4">
+                    <h1 className="flex items-center gap-x-1 text-xl font-bold sm:text-2xl">{systolic} / {diastolic} <span className="text-sm text-white-200">mmhg</span></h1>
+                    <p className="flex items-center gap-x-1 text-xl font-bold sm:text-2xl">{pulse} <span className="text-sm text-white-200">bpm</span></p>
                 </section>
 
-                {note && <p className="text-sm mt-1 border-l-3 py-1 pl-2">{note}</p>}
+                {note && <p className="mt-1 border-l-3 py-1 pl-2 text-sm wrap-break-word">{note}</p>}
             </div>
 
-            <div className="text-right space-y-1">
-                <Image src={getLevelImage(systolic, diastolic, pulse)} alt="BP Level" />
+            <div className="space-y-1 self-start text-left sm:self-center sm:text-right">
+                <Image src={getLevelImage(systolic, diastolic, pulse)} alt="BP Level" className="h-auto " />
                 <p className="capitalize ">{source}</p>
             </div>
         </section>

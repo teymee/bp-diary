@@ -8,12 +8,12 @@ export default function AddReading() {
       <div><h1 className='text-[36px] font-semibold'>Add Reading</h1></div>
 
 
-      <section className='mt-4 flex items-start gap-x-4'>
-        <section className='w-[60%]'>
+      <section className='mt-4 flex items-start  gap-4 [ lg:flex-row flex-col ]'>
+        <section className='lg:w-[60%]'>
           <ManualReading />
         </section>
 
-        <section className='w-[40%]'>
+        <section className='lg:w-[40%]'>
           <ReadingTips />
         </section>
       </section>

@@ -12,8 +12,8 @@ import { getLevelImage } from '@/utils'
 
 export default function AverageRange({ readings }: { readings: ReadingType[] | null }) {
     const latestData = null
-    const averageSystolic = readings && readings.length > 0 ? Math.round(readings.reduce((sum, r) => sum + r.systolic, 0) / readings.length) : null
-    const averageDiastolic = readings && readings.length > 0 ? Math.round(readings.reduce((sum, r) => sum + r.diastolic, 0) / readings.length) : null
+    const averageSystolic = readings && readings.length > 0 ? Math.round(readings.reduce((sum, r) => sum + r.systolic, 0) / readings.length) : 0
+    const averageDiastolic = readings && readings.length > 0 ? Math.round(readings.reduce((sum, r) => sum + r.diastolic, 0) / readings.length) : 0
     return (
         <section className='space-y-4'>
             <OverviewCard image={waveTriangle} title="Average Reading">
@@ -38,7 +38,7 @@ export default function AverageRange({ readings }: { readings: ReadingType[] | n
                                     </div>
 
 
-                                    <Image src={getLevelImage(averageSystolic, averageDiastolic)} alt="Blood pressure level" />
+                                    <Image src={getLevelImage(averageSystolic, averageDiastolic, 0)} alt="Blood pressure level" />
 
                                 </section>
 

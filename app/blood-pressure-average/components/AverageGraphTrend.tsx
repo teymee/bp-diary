@@ -16,40 +16,38 @@ import dynamic from "next/dynamic";
 
 const ReactChart = dynamic(() => import("react-apexcharts"), { ssr: false });
 
-export default function AverageGraphTrend() {
-    const [loading, setLoading] = useState(true)
-    const [readings, setReadings] = useState<ReadingType[] | null>(null)
-    const { userId } = useAuth()
+export default function AverageGraphTrend({ readings }: { readings: ReadingType[] | null }) {
+    // const { userId } = useAuth()
 
-    useEffect(() => {
+    // useEffect(() => {
 
-        const fetchData = async () => {
-            if (!userId) {
-                setReadings([])
-                setLoading(false)
-                return
-            }
+    //     const fetchData = async () => {
+    //         if (!userId) {
+    //             setReadings([])
+    //             setLoading(false)
+    //             return
+    //         }
 
-            setLoading(true)
+    //         setLoading(true)
 
-            const { data, error } = await supabase.from("readings").select("*").eq('user_id', userId).order("created_at", { ascending: false })
-            if (error) {
-                console.error("Error fetching readings:", error)
-                setReadings([])
-            } else {
-                setReadings(data)
-            }
+    //         const { data, error } = await supabase.from("readings").select("*").eq('user_id', userId).order("created_at", { ascending: false })
+    //         if (error) {
+    //             console.error("Error fetching readings:", error)
+    //             setReadings([])
+    //         } else {
+    //             setReadings(data)
+    //         }
 
-            setLoading(false)
+    //         setLoading(false)
 
-        }
-        fetchData()
+    //     }
+    //     fetchData()
 
 
-        return () => {
-            setReadings(null)
-        }
-    }, [userId])
+    //     return () => {
+    //         setReadings(null)
+    //     }
+    // }, [userId])
 
     const sortedReadings = [...(readings ?? [])].reverse()
 
@@ -216,39 +214,33 @@ export default function AverageGraphTrend() {
     return (
         <section className='flex h-full flex-col'>
             <OverviewCard image={bpAverage} title="Blood Pressure Average">
-                {
-                    loading && <Loader />
-                }
 
-                {
-                    !loading && (
-                        <section className='text-white-200 text-sm h-full'>
-                            {
-                                readings?.length === 0
-                                && (
-                                    <section className='flex flex-col items-center justify-center gap-y-3 h-full'>
-                                        <Image src={empty} alt="No data available" />
-                                        <div className='text-center'>
-                                            <h2 className='text-lg font-medium'>No readings recorded</h2>
-                                            <p>Recorded readings will appear here</p>
-                                        </div>
-                                    </section>
-                                )
-                            }
+                <section className='text-white-200 text-sm h-full'>
+                    {
+                        readings?.length === 0
+                        && (
+                            <section className='flex flex-col items-center justify-center gap-y-3 h-full'>
+                                <Image src={empty} alt="No data available" />
+                                <div className='text-center'>
+                                    <h2 className='text-lg font-medium'>No readings recorded</h2>
+                                    <p>Recorded readings will appear here</p>
+                                </div>
+                            </section>
+                        )
+                    }
 
 
-                            {
-                                readings && readings.length > 0 && (
-                                    <section className="h-full w-full flex flex-col items-center justify-center py-4">
-                                        <section className="h-[90%] w-full">
-                                            <ReactChart options={chartOptions} series={series} type="line" height="100%" width="100%" />
-                                        </section>
-                                    </section>
-                                )
-                            }
-                        </section>
-                    )
-                }
+                    {
+                        readings && readings.length > 0 && (
+                            <section className="h-full w-full flex flex-col items-center justify-center py-4">
+                                <section className="h-[90%] w-full">
+                                    <ReactChart options={chartOptions} series={series} type="line" height="100%" width="100%" />
+                                </section>
+                            </section>
+                        )
+                    }
+                </section>
+
 
             </OverviewCard>
 

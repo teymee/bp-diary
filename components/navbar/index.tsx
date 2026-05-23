@@ -4,22 +4,32 @@ import { useTheme } from "next-themes"
 import Image from "next/image"
 import logo from "@/assets/images/logo.svg"
 import avatar from "@/assets/images/avatar.svg"
-import add from "@/assets/images/add.svg"
-import { use, useEffect, useState } from "react"
+import { useEffect, useState } from "react"
 import AddReading from "./component"
 
 import plus from "@/assets/images/Plus.svg"
 import Link from "next/link"
-import { usePathname } from "next/navigation"
-import { link } from "fs"
+import { usePathname, useRouter } from "next/navigation"
+import { supabase } from "@/lib/supabase/client"
+import { useAuth } from "@/providers/AuthProvider"
 
 export default function Navbar() {
+  const router = useRouter()
   const pathName = usePathname()
+  const { session } = useAuth()
   const { theme, setTheme } = useTheme()
   const isDark = theme === "dark"
 
   const [mounted, setMounted] = useState(false)
   const [isModalOpen, setIsModalOpen] = useState(false)
+  const [isLoggingOut, setIsLoggingOut] = useState(false)
+
+  const handleLogout = async () => {
+    setIsLoggingOut(true)
+    await supabase.auth.signOut()
+    router.push('/login')
+    setIsLoggingOut(false)
+  }
 
   // eslint-disable-next-line react-hooks/set-state-in-effect
   useEffect(() => setMounted(true), [])
@@ -136,6 +146,17 @@ export default function Navbar() {
               <p>Add Reading</p>
             </div>
           </Link>
+
+          {session && (
+            <button
+              type="button"
+              onClick={handleLogout}
+              disabled={isLoggingOut}
+              className="cursor-pointer rounded-full border border-red-200 px-3 py-1.5 font-semibold text-red-600 transition hover:bg-red-50 disabled:cursor-not-allowed disabled:opacity-60 dark:border-red-500/40 dark:text-red-300 dark:hover:bg-red-500/10"
+            >
+              {isLoggingOut ? "Logging out..." : "Logout"}
+            </button>
+          )}
 
           {/* <div onClick={() => setIsModalOpen(!isModalOpen)} className="bg-primary-200 cursor-pointer px-3 flex items-center gap-x-2 rounded-full text-primary-100 py-1.5">
             <p>Add Reading</p>

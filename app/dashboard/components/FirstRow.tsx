@@ -2,13 +2,13 @@ import OverviewCard from '@/components/UI/OverviewCard'
 import React, { useEffect, useState } from 'react'
 import latestReading from "@/assets/images/latest-reading.svg"
 import bpAverage from "@/assets/images/BP-average.svg"
-import empty from "@/assets/images/empty.svg"
 import Image from 'next/image'
 import heartPulse from "@/assets/images/heart-pulse.svg"
 import { formatDate, getLevelImage, getPulseLevelColor } from '@/utils'
 import type { ApexOptions } from 'apexcharts'
 
 import dynamic from 'next/dynamic'
+import Link from 'next/link'
 
 import reminder from "@/assets/images/reminder.svg"
 import add from "@/assets/images/add.svg"
@@ -19,6 +19,7 @@ import { supabase } from '@/lib/supabase/client'
 import target from "@/assets/images/target.svg"
 import { GoalType, ReadingType, StreakType } from '@/utils/types'
 import Loader from '@/components/UI/Loader'
+import EmptyState from './EmptyState'
 const ReactApexChart = dynamic(() => import("react-apexcharts"), { ssr: false })
 
 
@@ -252,6 +253,15 @@ export default function FirstRow({ readings }: { readings: ReadingType[] }) {
                                     </section>
                                 )
                             }
+
+                            {
+                                !latestData && (
+                                    <EmptyState
+                                        title="No readings recorded"
+                                        description="Recorded readings will appear here"
+                                    />
+                                )
+                            }
                         </section>
                     </OverviewCard>
 
@@ -266,8 +276,9 @@ export default function FirstRow({ readings }: { readings: ReadingType[] }) {
                             }
                             <section>
                                 {
-                                    !isGoalLoading && (<section>{
-                                        goal && (
+                                    !isGoalLoading && (
+                                        <section>
+                                            {goal && (
                                             <section className='space-y-3 pt-4'>
                                                 <section className='space-y-2'>
                                                     <div className='bg-white-400 py-3 rounded-lg px-3 '>
@@ -294,8 +305,16 @@ export default function FirstRow({ readings }: { readings: ReadingType[] }) {
                                                     </div>
                                                 </section>
                                             </section>
-                                        )
-                                    }</section>)
+                                            )}
+
+                                            {!goal && (
+                                                <EmptyState
+                                                    title="No goal set"
+                                                    description="Create a BP goal to track progress"
+                                                />
+                                            )}
+                                        </section>
+                                    )
                                 }
                             </section>
 
@@ -314,13 +333,10 @@ export default function FirstRow({ readings }: { readings: ReadingType[] }) {
                         <section className=' text-sm h-full'>
                             {
                                 !averageDiastolic && (
-                                    <section className='flex flex-col items-center justify-center gap-y-3 h-full'>
-                                        <Image src={empty} alt="No data available" />
-                                        <div className='text-center'>
-                                            <h2 className='text-base font-medium'>No readings recorded</h2>
-                                            <p>Recorded readings will appear here</p>
-                                        </div>
-                                    </section>
+                                    <EmptyState
+                                        title="No readings recorded"
+                                        description="Recorded readings will appear here"
+                                    />
                                 )
                             }
 
@@ -350,13 +366,10 @@ export default function FirstRow({ readings }: { readings: ReadingType[] }) {
                         <section className='text-white-200 text-sm h-full'>
                             {
                                 !averagePulse && (
-                                    <section className='flex flex-col items-center justify-center gap-y-3 h-full'>
-                                        <Image src={empty} alt="No data available" />
-                                        <div className='text-center'>
-                                            <h2 className='text-base font-medium'>No readings recorded</h2>
-                                            <p>Recorded readings will appear here</p>
-                                        </div>
-                                    </section>
+                                    <EmptyState
+                                        title="No readings recorded"
+                                        description="Recorded readings will appear here"
+                                    />
                                 )
                             }
                             {
@@ -408,18 +421,18 @@ export default function FirstRow({ readings }: { readings: ReadingType[] }) {
                             <section className='text-white-200 text-sm flex flex-col items-center h-full justify-center'>
                                 {
                                     !reminderData && (
-                                        <section className='flex flex-col items-center justify-center gap-y-3 h-full'>
-                                            <Image src={empty} alt="No data available" />
-                                            <div className='text-center'>
-                                                <h2 className='text-base font-medium'>No reminders Set</h2>
-                                                <p>Add a reminder to get notified</p>
-                                            </div>
+                                        <section className='flex flex-col items-center justify-center gap-y-2 h-full'>
+                                            <EmptyState
+                                            imageSize={72}
+                                                title="No reminders set"
+                                                description="Add a reminder to get notified"
+                                            />
 
 
-                                            <div className="bg-primary-200 px-3 flex items-center gap-x-2 rounded-full text-primary-100 py-1.5">
+                                            <Link href="/add-reading" className="bg-primary-200 px-3 flex items-center gap-x-2 rounded-full text-primary-100 py-1.5">
                                                 <p>Add Reading</p>
                                                 <Image src={add} alt="Avatar" width={25} height={25} className="rounded-full" />
-                                            </div>
+                                            </Link>
                                         </section>
                                     )
                                 }

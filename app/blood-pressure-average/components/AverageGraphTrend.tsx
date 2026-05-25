@@ -259,7 +259,7 @@ export default function AverageGraphTrend({ readings }: { readings: ReadingType[
                     {
                         readings && readings.length > 0 && (
                             <section className="flex h-full w-full flex-col items-stretch justify-center py-2 sm:py-4">
-                                <section className="h-62.5 w-full sm:h-75 md:h-90 lg:h-105">
+                                <section className="h-62.5 w-full sm:h-80 md:h-90 lg:h-105">
                                     <ReactChart options={chartOptions} series={series} type="line" height="100%" width="100%" />
                                 </section>
                             </section>

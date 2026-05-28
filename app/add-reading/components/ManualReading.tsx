@@ -96,53 +96,71 @@ export default function ManualReading() {
       note,
     }
 
-    // 🚨 Streak logic 
-    const { data: streakData, error: streakError } = await supabase.from('streaks').select('current_streak, longest_streak, last_recorded_at').eq('user_id', session.user.id).maybeSingle()
+    // 🚨 Streak logic
+    const { data: streakData, error: streakError } = await supabase
+      .from('streaks')
+      .select('id, current_streak, longest_streak, last_recorded_at')
+      .eq('user_id', session.user.id)
+      .order('last_recorded_at', { ascending: false, nullsFirst: false })
+      .limit(1)
+      .maybeSingle()
 
     if (streakError) {
-      setIsSubmitting(false)
       showToast('error', 'Streak error', 'Failed to update streak. Reading will still be saved.')
       console.error('Streak fetch error:', streakError)
     } else {
-      const today = new Date()
+      const readingDate = new Date(recordedAt)
+      const readingDay = new Date(readingDate.getFullYear(), readingDate.getMonth(), readingDate.getDate())
+
       if (streakData === null) {
         // No streak record, create one
-        const { error: createError } = await supabase.from('streaks').insert({ user_id: session.user.id, current_streak: 1, longest_streak: 1, last_recorded_at: today.toISOString() })
+        const { error: createError } = await supabase
+          .from('streaks')
+          .insert({
+            user_id: session.user.id,
+            current_streak: 1,
+            longest_streak: 1,
+            last_recorded_at: readingDate.toISOString(),
+          })
+
         if (createError) {
-          setIsSubmitting(false)
           showToast('error', 'Streak error', 'Failed to create streak. Reading will still be saved.')
           console.error('Streak create error:', createError)
         }
-      }
-      else {
-        // Update existing streak
-        const lastRecordedAt = new Date(streakData.last_recorded_at)
-        const lastRecordISO = lastRecordedAt.toISOString().split('T')[0]
-        const todayISO = today.toISOString().split('T')[0]
-        if (lastRecordISO !== todayISO) {
+      } else {
+        let currentStreak = streakData.current_streak
+        let longestStreak = streakData.longest_streak
 
-          const diffInDays = Math.floor((today.getTime() - lastRecordedAt.getTime()) / (1000 * 60 * 60 * 24))
-          let currentStreak = streakData.current_streak
-          let longestStreak = streakData.longest_streak
+        if (streakData.last_recorded_at) {
+          const lastRecordedAt = new Date(streakData.last_recorded_at)
+          const lastRecordedDay = new Date(lastRecordedAt.getFullYear(), lastRecordedAt.getMonth(), lastRecordedAt.getDate())
+          const msPerDay = 1000 * 60 * 60 * 24
+          const diffInDays = Math.round((readingDay.getTime() - lastRecordedDay.getTime()) / msPerDay)
 
           if (diffInDays === 1) {
             currentStreak += 1
-            if (currentStreak > longestStreak) {
-              longestStreak = currentStreak
-            }
+            longestStreak = Math.max(longestStreak, currentStreak)
           } else if (diffInDays > 1) {
             currentStreak = 1
           }
-          const { error: updateError } = await supabase.from('streaks').update({ current_streak: currentStreak, longest_streak: longestStreak, last_recorded_at: today.toISOString() }).eq('user_id', session.user.id)
-          if (updateError) {
-            setIsSubmitting(false)
-            showToast('error', 'Streak error', 'Failed to update streak. Reading will still be saved.')
-            console.error('Streak update error:', updateError)
-          }
         }
 
+        const { error: updateError } = await supabase
+          .from('streaks')
+          .update({
+            current_streak: currentStreak,
+            longest_streak: longestStreak,
+            last_recorded_at: readingDate.toISOString(),
+          })
+          .eq('user_id', session.user.id)
 
 
+        if (updateError) {
+          showToast('error', 'Streak error', 'Failed to update streak. Reading will still be saved.')
+          console.error('Streak update error:', updateError)
+        } else {
+          showToast('success', 'Streak updated', 'Your streak has been updated successfully.')
+        }
       }
     }
 

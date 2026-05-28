@@ -165,7 +165,7 @@ export default function Login() {
                                         name='otp'
                                         id='otp'
                                         required
-                                        placeholder='Enter 6-digit code'
+                                        placeholder='Enter 8-digit code'
                                         className='inputStyle mt-2 border border-white-300 bg-white! tracking-[0.22em] placeholder:text-white-500 dark:border-black-300 dark:bg-black-400!'
                                     />
                                 </div>

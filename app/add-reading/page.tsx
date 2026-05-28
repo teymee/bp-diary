@@ -9,7 +9,7 @@ export default function AddReading() {
 
 
       <section className='mt-4 flex items-start  gap-4 [ lg:flex-row flex-col ]'>
-        <section className='lg:w-[60%]'>
+        <section className='lg:w-[60%] w-full'>
           <ManualReading />
         </section>
 

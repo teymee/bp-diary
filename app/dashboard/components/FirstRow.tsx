@@ -194,13 +194,20 @@ export default function FirstRow({ readings }: { readings: ReadingType[] }) {
 
         const fetchStreak = async () => {
             if (!userId) return
-            const { data, error } = await supabase.from('streaks').select('*').eq('user_id', userId).maybeSingle()
+
+            const { data, error } = await supabase
+                .from('streaks')
+                .select('*')
+                .eq('user_id', userId)
+                .order('last_recorded_at', { ascending: false, nullsFirst: false })
+                .limit(1)
+                .maybeSingle()
+
             if (error) {
                 console.error(error.message, error.details, error.hint)
                 return
             } else {
                 setStreak(data)
-                console.log("Streak data:", data)
             }
             setIsStreakLoading(false)
         }

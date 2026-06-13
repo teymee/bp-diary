@@ -5,8 +5,21 @@ import normal from "@/assets/images/normal-bp.svg"
 import elevated from "@/assets/images/elevated-bp.svg"
 import hbp1 from "@/assets/images/hbp1.svg"
 import hbp2 from "@/assets/images/hbp2.svg"
-import { text } from "stream/consumers";
+import { useAuthStore } from "@/store/authStore";
 
+export const getUserId = async () => {
+  let userId = useAuthStore.getState().user?.id ?? null
+
+  if (!userId) {
+    return await useAuthStore.getState().getUser().then(() => {
+      userId = useAuthStore.getState().user?.id ?? null
+      return userId
+    })
+  }
+
+  return userId
+
+}
 
 const hasOffset = (dateStr: string) => {
   const str = String(dateStr);
@@ -56,13 +69,13 @@ export const getLevelImage = (sys: number, dia: number, pulse: number) => {
   if (sys >= 120 && sys < 130 && dia < 80) {
     return elevated
   }
-   if (sys >= 145 ) {
+  if (sys >= 145) {
     return hbp2
   }
   if ((sys >= 130 && sys < 140) || (dia >= 80 && dia < 90)) {
     return hbp1
   }
- 
+
 }
 
 export const getPulseLevelColor = (pulse: number): { textColor: string; bgColor: string; text: string } => {

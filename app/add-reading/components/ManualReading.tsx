@@ -158,8 +158,6 @@ export default function ManualReading() {
         if (updateError) {
           showToast('error', 'Streak error', 'Failed to update streak. Reading will still be saved.')
           console.error('Streak update error:', updateError)
-        } else {
-          showToast('success', 'Streak updated', 'Your streak has been updated successfully.')
         }
       }
     }

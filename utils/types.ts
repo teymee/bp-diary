@@ -1,9 +1,11 @@
 export type GoalType = {
+  id:string,
   goal_name: string,
   systolic: number,
   diastolic: number,
   pulse: number,
-  end_date: string
+  end_date: string,
+  note: string | null,
 }
 
 export type ReadingType = {

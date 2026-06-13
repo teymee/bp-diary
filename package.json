@@ -27,7 +27,8 @@
     "react-easy-crop": "^5.5.7",
     "react-image-crop": "^11.0.10",
     "sharp": "^0.34.5",
-    "tesseract.js": "^7.0.0"
+    "tesseract.js": "^7.0.0",
+    "zustand": "^5.0.14"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4",

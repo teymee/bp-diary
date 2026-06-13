@@ -4,16 +4,15 @@ import Image from 'next/image'
 import recentReading from "@/assets/images/recent-reading.svg"
 
 
-import { ReadingType } from '@/utils/types'
 import ReadingRow from '@/app/all-reading/components/ReadingRow'
+import { readingsSelectors, useReadingStore } from '@/store/readingsStore'
 
-export default function SecondRow({ readings }: { readings: ReadingType[] }) {
-    const latestReading = readings.slice(0, 5)
+export default function SecondRow() {
+    const readings = useReadingStore(readingsSelectors.readings)
+    if (!readings) return
+    const latestReading = readings.slice(0, 10)
     return (
         <section className='flex flex-1 h-full gap-x-4 items-stretch'>
-
-
-
             <section className='h-full w-full  '>
                 <OverviewCard image={recentReading} title="Recent Readings">
                     <section className='text-white-200 text-xs py-10 px-4 max-h-100 overflow-y-scroll'>

@@ -19,10 +19,12 @@ export default function OverviewCard({ image, title, children, topContent, noPad
                             <div className='dark:text-foreground'>{title}</div>
                         </section>)
                 }
-                {
-                    topContent && <>{topContent}</>
-                }
+                
             </div>}
+
+            {
+                topContent && <>{topContent}</>
+            }
 
 
 

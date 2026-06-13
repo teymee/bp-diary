@@ -1,5 +1,5 @@
 import OverviewCard from '@/components/UI/OverviewCard'
-import React, { useEffect, useState } from 'react'
+import React, { useEffect } from 'react'
 import latestReading from "@/assets/images/latest-reading.svg"
 import bpAverage from "@/assets/images/BP-average.svg"
 import Image from 'next/image'
@@ -13,18 +13,38 @@ import Link from 'next/link'
 import reminder from "@/assets/images/reminder.svg"
 import add from "@/assets/images/add.svg"
 import streakBadge from "@/assets/images/streak.svg"
-import { useAuth } from '@/providers/AuthProvider'
-import { supabase } from '@/lib/supabase/client'
 
 import target from "@/assets/images/target.svg"
-import { GoalType, ReadingType, StreakType } from '@/utils/types'
 import Loader from '@/components/UI/Loader'
 import EmptyState from './EmptyState'
+import { readingsSelectors, useReadingStore } from '@/store/readingsStore'
+import { goalSelector, useGoalStore } from '@/store/goalStore'
+import { streakSelector, useStreakStore } from '@/store/streakStore'
 const ReactApexChart = dynamic(() => import("react-apexcharts"), { ssr: false })
 
 
 
-export default function FirstRow({ readings }: { readings: ReadingType[] }) {
+export default function FirstRow() {
+
+    const readings = useReadingStore(readingsSelectors.readings)
+    
+    // 🚨 Goal store
+    const fetchGoal = useGoalStore((s) => s.getGoal)
+    const isGoalLoading = useGoalStore(goalSelector.loading)
+    const goal = useGoalStore(goalSelector.goal)
+
+    // 🚨 Streak store 
+    const isStreakLoading = useStreakStore(streakSelector.loading)
+    const streak = useStreakStore(streakSelector.streak)
+    const fetchStreak = useStreakStore((s) => s.getStreak)
+
+    useEffect(() => {
+        fetchStreak()
+        fetchGoal()
+    }, [fetchStreak, fetchGoal])
+
+
+    if (!readings) return
     const latestData = readings[0]
     const reminderData = null
     const { systolic, diastolic, pulse, recorded_at } = latestData || {}
@@ -163,63 +183,13 @@ export default function FirstRow({ readings }: { readings: ReadingType[] }) {
 
 
     }
-    const [goal, setGoal] = useState<GoalType | null>(null)
-    const [isGoalLoading, setIsGoalLoading] = useState(true)
-    const [isStreakLoading, setIsStreakLoading] = useState(true)
-    const [streak, setStreak] = useState<StreakType | null>(null)
-    const { userId } = useAuth()
+
     const currentStreak = streak?.current_streak ?? 0
     const longestStreak = streak?.longest_streak ?? 0
     const currentDayLabel = currentStreak < 2 ? 'Day' : 'Days'
     const longestDayLabel = longestStreak < 2 ? 'day' : 'days'
 
-    useEffect(() => {
-        const fetchGoal = async () => {
 
-            if (!userId) return
-            setIsGoalLoading(true)
-
-            const { data, error } = await supabase.from('goals').select('*')
-                .eq('user_id', userId)
-                .order('created_at', { ascending: false })
-                .limit(1).maybeSingle()
-            if (error) {
-                console.error(error.message, error.details, error.hint)
-                return
-            } else {
-                setGoal(data)
-            }
-            setIsGoalLoading(false)
-        }
-
-        const fetchStreak = async () => {
-            if (!userId) return
-
-            const { data, error } = await supabase
-                .from('streaks')
-                .select('*')
-                .eq('user_id', userId)
-                .order('last_recorded_at', { ascending: false, nullsFirst: false })
-                .limit(1)
-                .maybeSingle()
-
-            if (error) {
-                console.error(error.message, error.details, error.hint)
-                return
-            } else {
-                setStreak(data)
-            }
-            setIsStreakLoading(false)
-        }
-        fetchStreak()
-        fetchGoal()
-
-
-        return () => {
-            setGoal(null)
-            setStreak(null)
-        }
-    }, [userId])
 
     return (
         <section className='grid [ lg:grid-cols-3 grid-cols-1 ] items-stretch gap-4'>
@@ -286,32 +256,32 @@ export default function FirstRow({ readings }: { readings: ReadingType[] }) {
                                     !isGoalLoading && (
                                         <section>
                                             {goal && (
-                                            <section className='space-y-3 pt-4'>
-                                                <section className='space-y-2'>
-                                                    <div className='bg-white-400 py-3 rounded-lg px-3 '>
-                                                        <div className='flex items-center gap-x-2'>
-                                                            <p className='text-2xl text-black font-semibold'>{goal.systolic} </p>
-                                                            <span className='text-white-200 font-medium! text-sm'>/ {goal.diastolic} mmhg</span>
+                                                <section className='space-y-3 pt-4'>
+                                                    <section className='space-y-2'>
+                                                        <div className='bg-white-400 py-3 rounded-lg px-3 '>
+                                                            <div className='flex items-center gap-x-2'>
+                                                                <p className='text-2xl text-black font-semibold'>{goal.systolic} </p>
+                                                                <span className='text-white-200 font-medium! text-sm'>/ {goal.diastolic} mmhg</span>
+                                                            </div>
                                                         </div>
-                                                    </div>
 
-                                                    <div className='bg-white-400 py-3 rounded-lg px-3 '>
-                                                        <div className='flex items-center gap-x-2'>
-                                                            <p className='text-2xl text-black font-semibold'>{goal.pulse} </p>
-                                                            <span className='text-white-200 font-medium! text-sm'>bpm</span>
+                                                        <div className='bg-white-400 py-3 rounded-lg px-3 '>
+                                                            <div className='flex items-center gap-x-2'>
+                                                                <p className='text-2xl text-black font-semibold'>{goal.pulse} </p>
+                                                                <span className='text-white-200 font-medium! text-sm'>bpm</span>
+                                                            </div>
                                                         </div>
-                                                    </div>
 
+                                                    </section>
+
+                                                    <section className='space-y-2'>
+                                                        <Image src={getLevelImage(goal.systolic, goal.diastolic, goal.pulse)} alt="Blood pressure level" />
+
+                                                        <div className='flex justify-between items-center text-sm'>
+                                                            <p>Due date by:  {formatDate(goal.end_date)}</p>
+                                                        </div>
+                                                    </section>
                                                 </section>
-
-                                                <section className='space-y-2'>
-                                                    <Image src={getLevelImage(goal.systolic, goal.diastolic, goal.pulse)} alt="Blood pressure level" />
-
-                                                    <div className='flex justify-between items-center text-sm'>
-                                                        <p>Due date by:  {formatDate(goal.end_date)}</p>
-                                                    </div>
-                                                </section>
-                                            </section>
                                             )}
 
                                             {!goal && (
@@ -430,7 +400,7 @@ export default function FirstRow({ readings }: { readings: ReadingType[] }) {
                                     !reminderData && (
                                         <section className='flex flex-col items-center justify-center gap-y-2 h-full'>
                                             <EmptyState
-                                            imageSize={72}
+                                                imageSize={72}
                                                 title="No reminders set"
                                                 description="Add a reminder to get notified"
                                             />

@@ -1,43 +1,22 @@
 'use client'
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
 import FirstRow from './components/FirstRow'
 import SecondRow from './components/SecondRow'
 import HeartComponent from '@/components/UI/Heart'
 import Loader from '@/components/UI/Loader'
-import { supabase } from '@/lib/supabase/client'
-import { useAuth } from '@/providers/AuthProvider'
-import { ReadingType } from '@/utils/types'
+import { readingsSelectors, useReadingStore } from '@/store/readingsStore'
 
 export default function Dashboard() {
 
-    const [loading, setLoading] = useState(false)
-    const [readings, setReadings] = useState<ReadingType[] | null>(null)
-    const { userId } = useAuth()
+    // 🚨 Stores 
+    const fetchReadings = useReadingStore((s) => s.getReadings)
+    const loading = useReadingStore(readingsSelectors.loading)
+    const readings = useReadingStore(readingsSelectors.readings)
+
 
     useEffect(() => {
-
-        const fetchData = async () => {
-            if (!userId) return
-            setLoading(true)
-
-            const { data, error } = await supabase.from("readings").select("*").eq('user_id', userId).order("created_at", { ascending: false })
-            if (error) {
-                console.error("Error fetching readings:", error)
-            } else {
-                setReadings(data)
-            }
-            setTimeout(() => {
-                setLoading(false)
-            }, 2500)
-
-        }
-        fetchData()
-
-
-        return () => {
-
-        }
-    }, [userId])
+        fetchReadings()
+    }, [])
 
     return (
         <section className='flex h-full flex-col items-stretch gap-y-4 md:gap-y-6'>
@@ -56,9 +35,9 @@ export default function Dashboard() {
                         <section className='flex h-full flex-col'>
 
                             <section className='space-y-3'>
-                                <FirstRow readings={readings} />
+                                <FirstRow />
                                 <section className='flex-1'>
-                                    <SecondRow readings={readings} />
+                                    <SecondRow />
                                 </section>
                             </section>
 

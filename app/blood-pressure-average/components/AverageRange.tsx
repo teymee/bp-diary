@@ -2,15 +2,18 @@ import OverviewCard from '@/components/UI/OverviewCard'
 import waveTriangle from "@/assets/images/wave-triangle.svg"
 import Image from 'next/image'
 
-import normalTag from "@/assets/images/normal-tag.svg"
 import trendUp from "@/assets/images/trend-up.svg"
 import trendDown from "@/assets/images/trend-down.svg"
 import whiteTrend from "@/assets/images/white-trend.svg"
-import { ReadingType } from '@/utils/types'
 import { getLevelImage } from '@/utils'
+import { readingsSelectors, useReadingStore } from '@/store/readingsStore'
 
 
-export default function AverageRange({ readings }: { readings: ReadingType[] | null }) {
+export default function AverageRange() {
+
+    const  readings= useReadingStore(readingsSelectors.readings)
+    if (!readings) return
+
     const latestData = null
     const averageSystolic = readings && readings.length > 0 ? Math.round(readings.reduce((sum, r) => sum + r.systolic, 0) / readings.length) : 0
     const averageDiastolic = readings && readings.length > 0 ? Math.round(readings.reduce((sum, r) => sum + r.diastolic, 0) / readings.length) : 0

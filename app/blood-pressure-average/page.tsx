@@ -2,52 +2,18 @@
 'use client'
 import AverageRange from './components/AverageRange'
 import AverageGraphTrend from './components/AverageGraphTrend'
-
-
-
-import { supabase } from '@/lib/supabase/client'
-import { useEffect, useState } from 'react'
-import { ReadingType } from '@/utils/types'
-import { useAuth } from '@/providers/AuthProvider'
+import { useEffect } from 'react'
 import Loader from '@/components/UI/Loader'
-import { ApexOptions } from "apexcharts";
-import dynamic from "next/dynamic";
+import { readingsSelectors, useReadingStore } from '@/store/readingsStore'
+
 
 export default function BloodPressureAverage() {
-    const [loading, setLoading] = useState(true)
-    const [readings, setReadings] = useState<ReadingType[] | null>(null)
-    const { userId } = useAuth()
 
+    const loading = useReadingStore(readingsSelectors.loading)
+    const fetchReading = useReadingStore(s => s.getReadings)
     useEffect(() => {
-
-        const fetchData = async () => {
-            if (!userId) {
-                setReadings([])
-                setLoading(false)
-                return
-            }
-
-            setLoading(true)
-
-            const { data, error } = await supabase.from("readings").select("*").eq('user_id', userId).order("created_at", { ascending: false })
-            if (error) {
-                console.error("Error fetching readings:", error)
-                setReadings([])
-            } else {
-                setReadings(data)
-            }
-
-            setLoading(false)
-
-        }
-        fetchData()
-
-
-        return () => {
-            setReadings(null)
-        }
-    }, [userId])
-
+        fetchReading()
+    }, [fetchReading])
 
     return (
         <section className='flex flex-1  flex-col '>
@@ -62,11 +28,11 @@ export default function BloodPressureAverage() {
                 !loading && (
                     <section className='mt-4 flex flex-1 [ lg:flex-row flex-col ]  items-stretch gap-4'>
                         <section className='lg:w-[70%] h-full '>
-                            <AverageGraphTrend readings={readings} />
+                            <AverageGraphTrend />
                         </section>
 
                         <section className='lg:w-[30%] h-full '>
-                            <AverageRange readings={readings} />
+                            <AverageRange />
                         </section>
 
                     </section>

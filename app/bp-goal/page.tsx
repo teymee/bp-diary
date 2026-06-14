@@ -1,44 +1,21 @@
 'use client'
-import React, { useEffect, useState } from 'react'
+import React, { useEffect } from 'react'
 import AddGoal from './components/AddGoal'
 import GoalInfo from './components/GoalInfo'
-import { supabase } from '@/lib/supabase/client'
-import { useAuth } from '@/providers/AuthProvider'
 import Loader from '@/components/UI/Loader'
 import ShowGoal from './components/ShowGoal'
+import { goalSelector, useGoalStore } from '@/store/goalStore'
 
 export default function BPGoal() {
-    const [goal, setGoal] = useState(null)
-    const [loading, setLoading] = useState(true)
-    const { session, sessionLoader } = useAuth()
-    const userId = session?.user?.id
+    // 🚨 Goal store
+    const fetchGoal = useGoalStore((s) => s.getGoal)
+    const loading = useGoalStore(goalSelector.loading)
+    const goal = useGoalStore(goalSelector.goal)
+
 
     useEffect(() => {
-        const fetchGoal = async () => {
-
-            const { data, error } = await supabase.from('goals').select('*')
-                .eq('user_id', userId)
-                .order('created_at', { ascending: false })
-                .limit(1).maybeSingle()
-            if (error) {
-                console.error(error.message, error.details, error.hint)
-                return
-            } else {
-                setGoal(data)
-            }
-            setLoading(false)
-        }
-        if (!sessionLoader && userId) {
-            fetchGoal()
-        } else if (!sessionLoader && !userId) {
-            return alert('User not logged in')
-        }
-
-
-        return () => {
-            setGoal(null)
-        }
-    }, [userId, sessionLoader])
+        fetchGoal()
+    }, [fetchGoal])
 
 
     return (
@@ -51,7 +28,7 @@ export default function BPGoal() {
                 !loading && (<section className='mt-4 flex items-start  gap-4 [ lg:flex-row flex-col ]'>
                     <section className='lg:w-[60%] w-full'>
                         {
-                            goal ? <ShowGoal goal={goal} /> : <AddGoal />
+                            goal ? <ShowGoal /> : <AddGoal />
                         }
                     </section>
 

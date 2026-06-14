@@ -6,14 +6,17 @@ import Image from "next/image";
 import empty from "@/assets/images/empty.svg"
 import bpAverage from "@/assets/images/BP-average.svg"
 
-import { ReadingType } from '@/utils/types'
 import { ApexOptions } from "apexcharts";
 import dynamic from "next/dynamic";
+import { readingsSelectors, useReadingStore } from "@/store/readingsStore";
 
 const ReactChart = dynamic(() => import("react-apexcharts"), { ssr: false });
 
-export default function AverageGraphTrend({ readings }: { readings: ReadingType[] | null }) {
+export default function AverageGraphTrend() {
 
+    const reverseReadings = useReadingStore(readingsSelectors.readings)
+    if (!reverseReadings) return
+    const readings = reverseReadings.reverse()
 
     const sortedReadings = [...(readings ?? [])].reverse()
 

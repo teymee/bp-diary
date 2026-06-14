@@ -1,5 +1,5 @@
 import OverviewCard from '@/components/UI/OverviewCard'
-import React, { useEffect } from 'react'
+import { useEffect } from 'react'
 import latestReading from "@/assets/images/latest-reading.svg"
 import bpAverage from "@/assets/images/BP-average.svg"
 import Image from 'next/image'
@@ -20,14 +20,16 @@ import EmptyState from './EmptyState'
 import { readingsSelectors, useReadingStore } from '@/store/readingsStore'
 import { goalSelector, useGoalStore } from '@/store/goalStore'
 import { streakSelector, useStreakStore } from '@/store/streakStore'
+
 const ReactApexChart = dynamic(() => import("react-apexcharts"), { ssr: false })
 
 
 
 export default function FirstRow() {
 
-    const readings = useReadingStore(readingsSelectors.readings)
-    
+    const reverseReading = useReadingStore(readingsSelectors.readings)
+
+
     // 🚨 Goal store
     const fetchGoal = useGoalStore((s) => s.getGoal)
     const isGoalLoading = useGoalStore(goalSelector.loading)
@@ -44,7 +46,8 @@ export default function FirstRow() {
     }, [fetchStreak, fetchGoal])
 
 
-    if (!readings) return
+    if (!reverseReading) return
+    const readings = reverseReading.reverse()
     const latestData = readings[0]
     const reminderData = null
     const { systolic, diastolic, pulse, recorded_at } = latestData || {}

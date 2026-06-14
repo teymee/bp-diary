@@ -10,7 +10,7 @@ import { readingsSelectors, useReadingStore } from '@/store/readingsStore'
 export default function SecondRow() {
     const readings = useReadingStore(readingsSelectors.readings)
     if (!readings) return
-    const latestReading = readings.slice(0, 10)
+    const latestReading = readings.reverse().slice(0, 10)
     return (
         <section className='flex flex-1 h-full gap-x-4 items-stretch'>
             <section className='h-full w-full  '>

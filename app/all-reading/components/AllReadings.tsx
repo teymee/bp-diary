@@ -13,42 +13,24 @@ import Loader from "@/components/UI/Loader";
 import { formatDate, getLevelImage } from "@/utils";
 import { ReadingType } from "@/utils/types";
 import ReadingRow from "./ReadingRow";
+import { readingsSelectors, useReadingStore } from "@/store/readingsStore";
 
 
 
 export default function AllReadings() {
 
-    const [loading, setLoading] = useState(false)
-    const [readings, setReadings] = useState<ReadingType[] | null>(null)
-    const { userId } = useAuth()
 
+    const loading = useReadingStore(readingsSelectors.loading)
+    const fetchReading = useReadingStore(s => s.getReadings)
     useEffect(() => {
-        const fetchReading = async () => {
-            setLoading(true)
-            if (!userId) return
-
-            const { data, error } = await supabase.from('readings').select('*')
-                .eq('user_id', userId)
-                .order('created_at', { ascending: false })
-
-            if (error) {
-                console.error(error.message, error.details, error.hint)
-                return
-            } else {
-                setReadings(data)
-                console.log("Fetched readings:", data)
-            }
-            setLoading(false)
-
-        }
-
-
         fetchReading()
+    }, [fetchReading])
 
-        return () => {
-            setReadings(null)
-        }
-    }, [userId])
+     const reverseReadings = useReadingStore(readingsSelectors.readings)
+    if (!reverseReadings) return
+    const readings = reverseReadings.reverse()
+
+
 
     return (
 

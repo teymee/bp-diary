@@ -5,25 +5,29 @@ import Image from "next/image";
 import target from "@/assets/images/target.svg";
 import RadioButton from "@/assets/images/RadioButton.svg";
 import OverviewCard from "@/components/UI/OverviewCard";
-import { formatDate, readingValidation, showToast } from "@/utils";
-import { GoalType } from "@/utils/types";
+import { formatDate, getUserId, readingValidation, showToast } from "@/utils";
 import { useRef, useState } from "react";
 
 import { Toast } from "primereact/toast";
 import { useAuth } from "@/providers/AuthProvider";
 import { supabase } from "@/lib/supabase/client";
+import { goalSelector, useGoalStore } from "@/store/goalStore";
 
-type ShowGoalProp = {
-    goal: GoalType;
-};
-export default function ShowGoal({ goal }: ShowGoalProp) {
+
+export default function ShowGoal() {
+
+    const goal = useGoalStore(goalSelector.goal)
+
+
     const { session } = useAuth();
     const [loading, setLoading] = useState(false);
     const [canEdit, setCanEdit] = useState(false);
 
     const toast = useRef<Toast>(null);
+    if (!goal) return
     const handleAddGoal = async (e: React.SubmitEvent<HTMLFormElement>) => {
         e.preventDefault();
+        const userId = await getUserId()
 
         const form = e.currentTarget;
         const formData = new FormData(form);
@@ -58,14 +62,15 @@ export default function ShowGoal({ goal }: ShowGoalProp) {
 
         readingValidation({
             toast,
-            session: session?.user?.id ?? null,
+            session: userId,
             sys: systolic,
             dia: diastolic,
             pulse,
         });
         setLoading(true);
         const data = {
-            user_id: session?.user?.id,
+            user_id: userId,
+            // session?.user?.id,
             goal_name: goalName,
             systolic,
             diastolic,
@@ -83,7 +88,7 @@ export default function ShowGoal({ goal }: ShowGoalProp) {
 
         showToast(toast, "success", "Goal updated", "Your goal has been updated.");
         setLoading(false);
-        
+
         setCanEdit(false);
         form.reset();
     };

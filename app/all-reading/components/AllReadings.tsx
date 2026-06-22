@@ -14,6 +14,7 @@ import { formatDate, getLevelImage } from "@/utils";
 import { ReadingType } from "@/utils/types";
 import ReadingRow from "./ReadingRow";
 import { readingsSelectors, useReadingStore } from "@/store/readingsStore";
+import { useCalendarStore } from "@/store/calendarStore";
 
 
 
@@ -22,11 +23,22 @@ export default function AllReadings() {
 
     const loading = useReadingStore(readingsSelectors.loading)
     const fetchReading = useReadingStore(s => s.getReadings)
+    const selectedDate = useCalendarStore((state) => state.selectedDate)
+    
     useEffect(() => {
         fetchReading()
     }, [fetchReading])
 
-     const reverseReadings = useReadingStore(readingsSelectors.readings)
+    useEffect(() => {
+        if (selectedDate === undefined) {
+            fetchReading('all')
+        } else if (selectedDate?.from && selectedDate?.to) {
+            fetchReading(selectedDate)
+        }
+
+    }, [selectedDate, fetchReading])
+
+    const reverseReadings = useReadingStore(readingsSelectors.readings)
     if (!reverseReadings) return
     const readings = reverseReadings.reverse()
 

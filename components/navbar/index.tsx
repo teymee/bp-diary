@@ -4,7 +4,7 @@ import { useTheme } from "next-themes"
 import Image from "next/image"
 import logo from "@/assets/images/logo.svg"
 import avatar from "@/assets/images/avatar.svg"
-import { useEffect, useState } from "react"
+import { useEffect, useState, type ComponentProps } from "react"
 import AddReading from "./component"
 
 import plus from "@/assets/images/Plus.svg"
@@ -12,8 +12,19 @@ import Link from "next/link"
 import { usePathname, useRouter } from "next/navigation"
 import { supabase } from "@/lib/supabase/client"
 import { useAuth } from "@/providers/AuthProvider"
+import Calendar from "react-calendar"
+
+import { useCalendarStore } from "@/store/calendarStore"
+import { DateRange } from "react-day-picker"
+
+type CalendarValue = Parameters<NonNullable<ComponentProps<typeof Calendar>["onChange"]>>[0]
 
 export default function Navbar() {
+
+  const selectedDate = useCalendarStore((state) => state.selectedDate)
+  const setDate = useCalendarStore((state) => state.setDate)
+  const setOpen = useCalendarStore((state) => state.setOpen)
+  const isCalendarOpen = useCalendarStore((state) => state.isCalendarOpen)
   const router = useRouter()
   const pathName = usePathname()
   const { session, sessionLoader } = useAuth()
@@ -33,6 +44,67 @@ export default function Navbar() {
     setIsLoggingOut(false)
   }
 
+  const handleOpenChange = (open: boolean) => {
+    setOpen(open)
+  };
+
+  const toRange = (value: CalendarValue): DateRange | undefined => {
+    if (Array.isArray(value)) {
+      return {
+        from: value[0] ?? undefined,
+        to: value[1] ?? undefined,
+      }
+    }
+
+    if (value instanceof Date) {
+      return {
+        from: value,
+        to: undefined,
+      }
+    }
+
+    return undefined
+  }
+
+  const handleRangeChange = (value: CalendarValue) => {
+    const nextRange = toRange(value)
+    setDate(nextRange)
+
+    if (nextRange?.from && nextRange?.to) {
+      setOpen(false)
+    }
+  }
+
+  const handlePreset = (preset: "7d" | "14d" | "30d" | "this-month" | "last-year" | "all") => {
+    if (preset === "all") {
+      setDate(undefined)
+      setOpen(false)
+      return
+    }
+
+    const today = new Date()
+    today.setHours(0, 0, 0, 0)
+
+    const from = new Date(today)
+
+    if (preset === "7d") {
+      from.setDate(from.getDate() - 6)
+    } else if (preset === "14d") {
+      from.setDate(from.getDate() - 13)
+    } else if (preset === "30d") {
+      from.setDate(from.getDate() - 29)
+    } else if (preset === "this-month") {
+      from.setDate(1)
+    } else if (preset === "last-year") {
+      from.setFullYear(from.getFullYear() - 1)
+      from.setMonth(0)
+      from.setDate(1)
+    }
+
+    setDate({ from, to: today })
+    setOpen(false)
+  }
+
   // eslint-disable-next-line react-hooks/set-state-in-effect
   useEffect(() => setMounted(true), [])
 
@@ -43,7 +115,7 @@ export default function Navbar() {
       name: "BP Averages",
       link: "/blood-pressure-average"
     },
-       {
+    {
       name: "BP Goal",
       link: "/bp-goal"
     },
@@ -134,15 +206,30 @@ export default function Navbar() {
             </span>
           </button>
 
+          {session && <section className="flex items-center gap-x-4">
 
-          {session && (
-            <div className="flex gap-x-2 items-center text-sm font-medium rounded-full px-3 py-1 bg-white-100 [ dark:bg-black ] ">
+
+
+            {/* <div className="flex gap-x-2 items-center text-sm font-medium rounded-full px-3 py-1 bg-white-100 [ dark:bg-black ] ">
               <p>My Account</p>
               <Image src={avatar} alt="Avatar" width={30} height={30} className="rounded-full" />
-            </div>
-          )}
+            </div> */}
 
-          {session && (
+
+
+
+
+
+            {/* 🚨 Calendar  */}
+            <div className="relative">
+              <p
+                onClick={() => handleOpenChange(!isCalendarOpen)}
+                role='button' className="cursor-pointer rounded-full border-gray-300 border bg-background px-3 py-1.5 text-foreground transition hover:bg-muted">
+                {selectedDate ? `${selectedDate?.from?.toDateString()} - ${selectedDate?.to?.toDateString()}` : "Select Date"}
+              </p>
+            </div>
+            {/*  */}
+
             <Link href="/add-reading">
 
               <div className="bg-primary-200 cursor-pointer px-3 flex items-center gap-x-2 rounded-full text-primary-100 py-1.5">
@@ -151,9 +238,7 @@ export default function Navbar() {
                 <p>Add Reading</p>
               </div>
             </Link>
-          )}
 
-          {session && (
             <button
               type="button"
               onClick={handleLogout}
@@ -162,7 +247,10 @@ export default function Navbar() {
             >
               {isLoggingOut ? "Logging out..." : "Logout"}
             </button>
-          )}
+
+          </section>}
+
+
 
           {/* <div onClick={() => setIsModalOpen(!isModalOpen)} className="bg-primary-200 cursor-pointer px-3 flex items-center gap-x-2 rounded-full text-primary-100 py-1.5">
             <p>Add Reading</p>
@@ -265,6 +353,17 @@ export default function Navbar() {
               <p>Add Reading</p>
             </Link>
 
+            <button
+              type="button"
+              onClick={() => {
+                setIsMobileMenuOpen(false)
+                handleOpenChange(!isCalendarOpen)
+              }}
+              className="cursor-pointer rounded-full border border-border bg-background px-3 py-2 text-foreground transition hover:bg-muted"
+            >
+              {selectedDate ? `${selectedDate?.from?.toDateString()} - ${selectedDate?.to?.toDateString()}` : "Select Date"}
+            </button>
+
             {session && (
               <button
                 type="button"
@@ -277,6 +376,34 @@ export default function Navbar() {
             )}
           </section>
         </section>
+      )}
+
+      {isCalendarOpen && (
+        <>
+          <div
+            className="fixed inset-0 z-40 bg-black/20 backdrop-blur-sm"
+            onClick={() => handleOpenChange(false)}
+          />
+          <section className="fixed left-1/2 top-1/2 z-50 -translate-x-1/2 -translate-y-1/2 date-picker-container">
+            <div className="date-range-presets">
+              <p className="date-range-presets__header">Select Range</p>
+              <button onClick={() => handlePreset("all")} className="date-preset-btn">All data</button>
+              <button onClick={() => handlePreset("7d")} className="date-preset-btn">Last 7 days</button>
+              <button onClick={() => handlePreset("14d")} className="date-preset-btn">Last 14 days</button>
+              <button onClick={() => handlePreset("30d")} className="date-preset-btn">Last 30 days</button>
+              <button onClick={() => handlePreset("this-month")} className="date-preset-btn">This month</button>
+              <button onClick={() => handlePreset("last-year")} className="date-preset-btn">Last year</button>
+            </div>
+            <Calendar
+              selectRange
+              allowPartialRange
+              maxDate={new Date()}
+              onChange={handleRangeChange}
+              value={selectedDate?.to ? [selectedDate.from ?? null, selectedDate.to] : (selectedDate?.from ?? null)}
+              className="date-range-calendar-popup"
+            />
+          </section>
+        </>
       )}
 
 

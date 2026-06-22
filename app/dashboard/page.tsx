@@ -5,6 +5,7 @@ import SecondRow from './components/SecondRow'
 import HeartComponent from '@/components/UI/Heart'
 import Loader from '@/components/UI/Loader'
 import { readingsSelectors, useReadingStore } from '@/store/readingsStore'
+import { useCalendarStore } from '@/store/calendarStore'
 
 export default function Dashboard() {
 
@@ -12,11 +13,23 @@ export default function Dashboard() {
     const fetchReadings = useReadingStore((s) => s.getReadings)
     const loading = useReadingStore(readingsSelectors.loading)
     const readings = useReadingStore(readingsSelectors.readings)
+    const selectedDate = useCalendarStore((state) => state.selectedDate)
 
 
     useEffect(() => {
         fetchReadings()
-    }, [])
+    }, [fetchReadings])
+
+
+
+    useEffect(() => {
+        if (selectedDate === undefined) {
+            fetchReadings('all')
+        } else if (selectedDate?.from && selectedDate?.to) {
+            fetchReadings(selectedDate)
+        }
+
+    }, [selectedDate, fetchReadings])
 
     return (
         <section className='flex h-full flex-col items-stretch gap-y-4 md:gap-y-6'>

@@ -7,6 +7,55 @@ import hbp1 from "@/assets/images/hbp1.svg"
 import hbp2 from "@/assets/images/hbp2.svg"
 import { useAuthStore } from "@/store/authStore";
 
+
+export const exportToJson = (
+  data: unknown[],
+  filename: string
+) => {
+  if (!data.length) return;
+
+  const json = JSON.stringify(data, null, 2);
+
+  const blob = new Blob([json], {
+    type: "application/json",
+  });
+
+  const url = URL.createObjectURL(blob);
+
+  const link = document.createElement("a");
+  link.href = url;
+  link.download = filename;
+
+  document.body.appendChild(link);
+  link.click();
+
+  document.body.removeChild(link);
+  URL.revokeObjectURL(url);
+};
+
+export const exportToCsv = (
+  data: Record<string, unknown>[],
+  filename: string
+) => {
+  const headers = Object.keys(data[0]);
+
+  const csv = [
+    headers.join(","),
+    ...data.map((row) =>
+      headers.map((h) => row[h]).join(",")
+    ),
+  ].join("\n");
+
+  const blob = new Blob([csv], {
+    type: "text/csv;charset=utf-8;",
+  });
+
+  const link = document.createElement("a");
+  link.href = URL.createObjectURL(blob);
+  link.download = filename;
+  link.click();
+};
+
 export const getUserId = async () => {
   let userId = useAuthStore.getState().user?.id ?? null
 
@@ -62,18 +111,18 @@ export const readingValidation = ({ toast, session, sys, dia, pulse }: { toast: 
 
 }
 
-export const getLevelImage = (sys: number, dia: number, pulse: number) => {
+export const getLevelImage = (sys: number, dia: number, pulse?: number, type?: 'text') => {
   if (sys < 120 && dia < 80) {
-    return normal
+    return type ? "Normal" : normal;
   }
   if (sys >= 120 && sys < 130 && dia < 90) {
-    return elevated
+    return type ? "Elevated" : elevated;
   }
-  if ((sys >= 130 && sys < 145) && (dia >= 80 && dia < 100)) {
-    return hbp1
+  if ((sys >= 130 && sys < 145) && (dia >= 70 && dia < 100)) {
+    return type ? "High Blood Pressure (Stage 1)" : hbp1;
   }
   if (sys >= 145) {
-    return hbp2
+    return type ? "High Blood Pressure (Stage 2)" : hbp2;
   }
 
 

@@ -6,37 +6,17 @@ import Image from "next/image";
 
 import empty from "@/assets/images/empty.svg"
 import recentReading from "@/assets/images/recent-reading.svg"
-import { useEffect, useState } from "react";
-import { supabase } from "@/lib/supabase/client";
-import { useAuth } from "@/providers/AuthProvider";
+
 import Loader from "@/components/UI/Loader";
-import { formatDate, getLevelImage } from "@/utils";
-import { ReadingType } from "@/utils/types";
 import ReadingRow from "./ReadingRow";
 import { readingsSelectors, useReadingStore } from "@/store/readingsStore";
-import { useCalendarStore } from "@/store/calendarStore";
-
 
 
 export default function AllReadings() {
 
 
     const loading = useReadingStore(readingsSelectors.loading)
-    const fetchReading = useReadingStore(s => s.getReadings)
-    const selectedDate = useCalendarStore((state) => state.selectedDate)
-    
-    useEffect(() => {
-        fetchReading()
-    }, [fetchReading])
 
-    useEffect(() => {
-        if (selectedDate === undefined) {
-            fetchReading('all')
-        } else if (selectedDate?.from && selectedDate?.to) {
-            fetchReading(selectedDate)
-        }
-
-    }, [selectedDate, fetchReading])
 
     const reverseReadings = useReadingStore(readingsSelectors.readings)
     if (!reverseReadings) return

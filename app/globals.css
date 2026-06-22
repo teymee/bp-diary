@@ -1,15 +1,12 @@
-
 @import "tailwindcss";
 @import "../assets/tailwind-assets.css";
 @import "primereact/resources/themes/lara-light-green/theme.css";
 @import "primereact/resources/primereact.min.css";
 @import "primeicons/primeicons.css";
+@import "react-date-picker/dist/DatePicker.css";
+@import "react-calendar/dist/Calendar.css";
+@import "tw-animate-css";
 @custom-variant dark (&:where([data-theme=dark], [data-theme=dark] *));
-
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
 
 /*  */
 
@@ -45,15 +42,45 @@
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-nunito);
+  --font-sans: var(--font-sans);
   --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+  --font-heading: var(--font-sans);
+  --color-sidebar-ring: var(--sidebar-ring);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar: var(--sidebar);
+  --color-chart-5: var(--chart-5);
+  --color-chart-4: var(--chart-4);
+  --color-chart-3: var(--chart-3);
+  --color-chart-2: var(--chart-2);
+  --color-chart-1: var(--chart-1);
+  --color-ring: var(--ring);
+  --color-input: var(--input);
+  --color-border: var(--border);
+  --color-destructive: var(--destructive);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-accent: var(--accent);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-muted: var(--muted);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-secondary: var(--secondary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-primary: var(--primary);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-popover: var(--popover);
+  --color-card-foreground: var(--card-foreground);
+  --color-card: var(--card);
+  /* --radius-sm: calc(var(--radius) * 0.6);
+  --radius-md: calc(var(--radius) * 0.8);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) * 1.4);
+  --radius-2xl: calc(var(--radius) * 1.8);
+  --radius-3xl: calc(var(--radius) * 2.2);
+  --radius-4xl: calc(var(--radius) * 2.6); */
 }
 /* Manual toggle via next-themes */
 [data-theme="dark"] {
@@ -79,8 +106,6 @@ html {
 } */
 
 body {
-  background: var(--background);
-  color: var(--foreground);
   font-family: var(--font-nunito);
 }
 
@@ -111,5 +136,505 @@ body {
 @media (prefers-reduced-motion: reduce) {
   .heart-beat {
     animation: none;
+  }
+}
+
+/*  ---break---*/
+
+/* :root {
+  --background: oklch(1 0 0);
+  --foreground: oklch(0.145 0 0);
+  --card: oklch(1 0 0);
+  --card-foreground: oklch(0.145 0 0);
+  --popover: oklch(1 0 0);
+  --popover-foreground: oklch(0.145 0 0);
+  --primary: oklch(0.205 0 0);
+  --primary-foreground: oklch(0.985 0 0);
+  --secondary: oklch(0.97 0 0);
+  --secondary-foreground: oklch(0.205 0 0);
+  --muted: oklch(0.97 0 0);
+  --muted-foreground: oklch(0.556 0 0);
+  --accent: oklch(0.97 0 0);
+  --accent-foreground: oklch(0.205 0 0);
+  --destructive: oklch(0.577 0.245 27.325);
+  --border: oklch(0.922 0 0);
+  --input: oklch(0.922 0 0);
+  --ring: oklch(0.708 0 0);
+  --chart-1: oklch(0.87 0 0);
+  --chart-2: oklch(0.556 0 0);
+  --chart-3: oklch(0.439 0 0);
+  --chart-4: oklch(0.371 0 0);
+  --chart-5: oklch(0.269 0 0);
+  --radius: 0.625rem;
+  --sidebar: oklch(0.985 0 0);
+  --sidebar-foreground: oklch(0.145 0 0);
+  --sidebar-primary: oklch(0.205 0 0);
+  --sidebar-primary-foreground: oklch(0.985 0 0);
+  --sidebar-accent: oklch(0.97 0 0);
+  --sidebar-accent-foreground: oklch(0.205 0 0);
+  --sidebar-border: oklch(0.922 0 0);
+  --sidebar-ring: oklch(0.708 0 0);
+} */
+
+/*  ---break---*/
+
+/* .dark {
+  --background: oklch(0.145 0 0);
+  --foreground: oklch(0.985 0 0);
+  --card: oklch(0.205 0 0);
+  --card-foreground: oklch(0.985 0 0);
+  --popover: oklch(0.205 0 0);
+  --popover-foreground: oklch(0.985 0 0);
+  --primary: oklch(0.922 0 0);
+  --primary-foreground: oklch(0.205 0 0);
+  --secondary: oklch(0.269 0 0);
+  --secondary-foreground: oklch(0.985 0 0);
+  --muted: oklch(0.269 0 0);
+  --muted-foreground: oklch(0.708 0 0);
+  --accent: oklch(0.269 0 0);
+  --accent-foreground: oklch(0.985 0 0);
+  --destructive: oklch(0.704 0.191 22.216);
+  --border: oklch(1 0 0 / 10%);
+  --input: oklch(1 0 0 / 15%);
+  --ring: oklch(0.556 0 0);
+  --chart-1: oklch(0.87 0 0);
+  --chart-2: oklch(0.556 0 0);
+  --chart-3: oklch(0.439 0 0);
+  --chart-4: oklch(0.371 0 0);
+  --chart-5: oklch(0.269 0 0);
+  --sidebar: oklch(0.205 0 0);
+  --sidebar-foreground: oklch(0.985 0 0);
+  --sidebar-primary: oklch(0.488 0.243 264.376);
+  --sidebar-primary-foreground: oklch(0.985 0 0);
+  --sidebar-accent: oklch(0.269 0 0);
+  --sidebar-accent-foreground: oklch(0.985 0 0);
+  --sidebar-border: oklch(1 0 0 / 10%);
+  --sidebar-ring: oklch(0.556 0 0);
+} */
+
+/*  ---break---*/
+
+/* @layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+  html {
+    @apply font-sans;
+  }
+} */
+
+@layer base {
+  body {
+    @apply text-foreground bg-background;
+  }
+
+  body {
+    @apply text-foreground bg-background;
+  }
+}
+
+.rdp {
+  --rdp-accent-color: var(--color-primary);
+  --rdp-background-color: var(--color-primary);
+  --rdp-accent-color-dark: var(--color-primary);
+}
+
+.rdp-day_selected {
+  background-color: var(--color-primary) !important;
+  color: var(--color-primary-foreground, white) !important;
+}
+
+.rdp-day_range_middle {
+  background-color: color-mix(
+    in srgb,
+    var(--color-primary) 18%,
+    transparent
+  ) !important;
+}
+
+.rdp-day_range_start,
+.rdp-day_range_end {
+  background-color: var(--color-primary) !important;
+  color: var(--color-primary-foreground, white) !important;
+}
+
+.rdp-day_selected,
+.rdp-day_selected:focus-visible,
+.rdp-day_selected:hover {
+background: var(--color-primary) !important;
+color: var(--color-primary-foreground, #fff) !important;
+border-radius: 8px !important;
+}
+
+.rdp-day_range_middle {
+background: color-mix(in srgb, var(--color-primary) 20%, transparent) !important;
+color: var(--foreground) !important;
+}
+
+.rdp-day_range_start,
+.rdp-day_range_end {
+background: var(--color-primary) !important;
+color: var(--color-primary-foreground, #fff) !important;
+border-radius: 8px !important;
+}
+
+.rdp-day_selected:hover {
+filter: brightness(1.1);
+}
+
+/* react-date-picker surface and popup fixes */
+.react-date-picker {
+  width: 100%;
+}
+
+.react-date-picker__wrapper {
+  border: 1px solid var(--color-border, #d1d5db);
+  border-radius: 0.5rem;
+  background-color: var(--color-card, #ffffff);
+  padding: 0.35rem 0.6rem;
+}
+
+.react-date-picker__inputGroup,
+.react-date-picker__inputGroup input,
+.react-date-picker__inputGroup__input {
+  color: var(--color-foreground, #111827);
+}
+
+.react-date-picker__inputGroup__divider {
+  color: var(--color-muted-foreground, #6b7280);
+}
+
+.react-date-picker__calendar {
+  z-index: 60;
+}
+
+.react-calendar {
+  border: 1px solid var(--color-border, #d1d5db);
+  border-radius: 0.75rem;
+  background-color: var(--color-popover, #ffffff);
+  color: var(--color-popover-foreground, #111827);
+  box-shadow: 0 12px 34px rgb(0 0 0 / 22%);
+}
+
+.react-calendar__navigation button,
+.react-calendar__tile {
+  color: inherit;
+}
+
+[data-theme="dark"] .react-date-picker__wrapper {
+  background-color: #111827;
+  border-color: #374151;
+}
+
+[data-theme="dark"] .react-date-picker__inputGroup,
+[data-theme="dark"] .react-date-picker__inputGroup input,
+[data-theme="dark"] .react-date-picker__inputGroup__input,
+[data-theme="dark"] .react-date-picker__inputGroup__divider {
+  color: #f3f4f6;
+}
+
+[data-theme="dark"] .react-calendar {
+  background-color: #111827;
+  border-color: #374151;
+  color: #f3f4f6;
+}
+
+[data-theme="dark"] .react-calendar__tile:enabled:hover,
+[data-theme="dark"] .react-calendar__tile:enabled:focus {
+  background-color: #1f2937;
+}
+
+.date-picker-container {
+  display: flex;
+  align-items: stretch;
+  font-size: clamp(12px, 0.2vw + 11.25px, 14px);
+  border-radius: 1rem;
+  background: color-mix(in srgb, var(--color-popover, #fff) 95%, #f8fafc 5%);
+  box-shadow: 0 22px 48px rgb(0 0 0 / 24%);
+  overflow: hidden;
+  height: 25rem;
+}
+
+.date-range-calendar-popup {
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+  overflow: hidden;
+  width: 27rem;
+  height: 100%;
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+}
+
+.date-range-calendar-popup .react-calendar {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.date-range-calendar-popup .react-calendar__viewContainer {
+  flex: 1;
+}
+
+.date-range-presets {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  gap: 0.75rem;
+  background: color-mix(in srgb, var(--color-popover, #fff) 85%, #f3f4f6 15%);
+  padding: 1.25rem;
+  border-right: 1px solid color-mix(in srgb, var(--color-border, #d1d5db) 70%, transparent);
+  min-width: 10rem;
+}
+
+.date-range-presets__header {
+  margin: 10px 0 0.35rem;
+  padding: 0 0 0.85rem;
+  text-align: center;
+  font-size: 1em;
+  font-weight: 500;
+  border-bottom: 1px solid color-mix(in srgb, var(--color-border, #d1d5db) 70%, transparent);
+}
+
+.date-preset-btn {
+  padding: 0.65rem 0.875rem;
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1em;
+  border: none;
+  border-radius: 0.5rem;
+  background: transparent;
+  color: var(--color-foreground, #171717);
+  cursor: pointer;
+  transition: background-color 0.3s ease, color 0.3s ease, transform 0.3s ease;
+}
+
+.date-preset-btn:hover {
+  background-color: color-mix(in srgb, var(--color-muted, #f5f5f5) 80%, transparent);
+}
+
+.date-range-calendar-popup .react-calendar__navigation {
+  margin-bottom: 0.75rem;
+  border-bottom: 1px solid color-mix(in srgb, var(--color-border, #d1d5db) 70%, transparent);
+  padding: 0.5rem;
+}
+
+.date-range-calendar-popup .react-calendar__navigation button {
+  border-radius: 0.6rem;
+  font-size: 1em;
+  font-weight: 600;
+  padding: 0.4rem 0.6rem;
+}
+
+.date-range-calendar-popup .react-calendar__navigation__label {
+  font-size: 1em;
+}
+
+.date-range-calendar-popup .react-calendar__navigation button:enabled:active {
+  background-color: color-mix(in srgb, var(--color-primary, #16a34a) 22%, #ffffff);
+  color: var(--color-foreground, #111827);
+}
+
+.date-range-calendar-popup .react-calendar__month-view__weekdays {
+  display: grid !important;
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+  align-items: center;
+  gap: 0.45rem;
+  margin-bottom: 0.5rem;
+  padding: 0 0.1rem;
+  text-align: center;
+}
+
+.date-range-calendar-popup .react-calendar__month-view__weekdays__weekday {
+  min-width: 0;
+  padding: 0.35rem 0;
+  font-size: 1em;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: color-mix(in srgb, var(--color-primary, #16a34a) 72%, var(--color-foreground, #111827));
+}
+
+.date-range-calendar-popup .react-calendar__month-view__weekdays__weekday abbr {
+  text-decoration: none;
+  cursor: default;
+}
+
+.date-range-calendar-popup .react-calendar__tile {
+  font-size: 1em;
+  padding: 0.6rem 0.4rem;
+}
+
+.date-range-calendar-popup .react-calendar__tile--active {
+  background: var(--color-primary, #16a34a) !important;
+  color: var(--color-primary-foreground, #fff) !important;
+  border-radius: 100% !important;
+  width: fit-content !important;
+  height: fit-content !important;
+  min-width: 1.9rem !important;
+  min-height: 1.9rem !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  justify-self: center;
+  padding: 0.1rem 0.2rem !important;
+}
+
+.date-range-calendar-popup .react-calendar__tile--active:enabled:hover,
+.date-range-calendar-popup .react-calendar__tile--active:enabled:focus,
+.date-range-calendar-popup .react-calendar__tile--active:enabled:active {
+  background: var(--color-primary, #16a34a) !important;
+  color: var(--color-primary-foreground, #fff) !important;
+}
+
+.date-range-calendar-popup .react-calendar__tile:not(.react-calendar__tile--active):enabled:hover,
+.date-range-calendar-popup .react-calendar__tile:not(.react-calendar__tile--active):enabled:focus {
+  border-radius: 100% !important;
+  width: fit-content !important;
+  height: fit-content !important;
+  min-width: 1.9rem !important;
+  min-height: 1.9rem !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  justify-self: center;
+  padding: 0.1rem 0.2rem !important;
+}
+/* Use an explicit 7-column grid so spacing never shifts weekday alignment */
+.date-range-calendar-popup .react-calendar__month-view__days {
+  display: grid !important;
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+  gap: 0.45rem;
+}
+
+.date-range-calendar-popup .react-calendar__month-view__days .react-calendar__tile {
+  margin: 0 !important;
+  width: fit-content !important;
+  height: fit-content !important;
+  max-width: none !important;
+  flex: initial !important;
+  min-width: 1.9rem !important;
+  min-height: 1.9rem !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  justify-self: center;
+  border-radius: 100% !important;
+  outline: none !important;
+  box-shadow: none !important;
+  padding: 0.1rem 0.2rem !important;
+  box-sizing: border-box;
+}
+
+[data-theme="dark"] .date-range-calendar-popup {
+  background: transparent;
+  box-shadow: none;
+}
+
+[data-theme="dark"] .date-range-calendar-popup .react-calendar__tile:disabled {
+  color: #94a3b8;
+  background-color: #1f2937;
+  opacity: 1;
+}
+
+[data-theme="dark"] .date-range-calendar-popup .react-calendar__tile:not(.react-calendar__tile--active):enabled:hover,
+[data-theme="dark"] .date-range-calendar-popup .react-calendar__tile:not(.react-calendar__tile--active):enabled:focus {
+  background-color: #334155;
+  color: #f8fafc;
+}
+
+[data-theme="dark"] .date-range-calendar-popup .react-calendar__navigation button {
+  color: #f8fafc;
+  background-color: #1f2937;
+  border: 1px solid #334155;
+}
+
+[data-theme="dark"] .date-range-calendar-popup .react-calendar__navigation button:enabled:hover,
+[data-theme="dark"] .date-range-calendar-popup .react-calendar__navigation button:enabled:focus {
+  background-color: #475569;
+  color: #f8fafc;
+}
+
+[data-theme="dark"] .date-range-calendar-popup .react-calendar__navigation button:enabled:active {
+  background-color: #334155;
+  color: #f8fafc;
+}
+
+[data-theme="dark"] .date-range-calendar-popup .react-calendar__navigation button:disabled {
+  color: #94a3b8;
+  background-color: #111827;
+  border-color: #1f2937;
+  opacity: 1;
+}
+
+[data-theme="dark"] .date-range-calendar-popup .react-calendar__month-view__weekdays__weekday {
+  color: color-mix(in srgb, #86efac 70%, #f8fafc 30%);
+}
+
+[data-theme="dark"] .date-range-calendar-popup .react-calendar__navigation__label {
+  font-weight: 700;
+}
+
+[data-theme="dark"] .date-picker-container {
+  background: color-mix(in srgb, #111827 96%, #000 4%);
+  box-shadow: 0 22px 52px rgb(0 0 0 / 55%);
+}
+
+[data-theme="dark"] .date-range-presets {
+  background: color-mix(in srgb, #1f2937 90%, #000 10%);
+  border-right-color: color-mix(in srgb, #374151 70%, transparent);
+}
+
+[data-theme="dark"] .date-range-presets__header {
+  border-bottom-color: color-mix(in srgb, #374151 70%, transparent);
+}
+
+[data-theme="dark"] .date-preset-btn {
+  color: var(--color-foreground, #f9fafc);
+}
+
+[data-theme="dark"] .date-preset-btn:hover {
+  background-color: color-mix(in srgb, #374151 80%, transparent);
+}
+
+@media (max-width: 768px) {
+  .date-picker-container {
+    flex-direction: column-reverse;
+    height: auto;
+    max-width: min(92vw, 26rem);
+  }
+
+  .date-range-calendar-popup {
+    width: 100%;
+  }
+
+  .date-range-presets {
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.5rem;
+    min-width: 0;
+    border-right: none;
+    border-top: 1px solid color-mix(in srgb, var(--color-border, #d1d5db) 70%, transparent);
+    padding: 0.85rem;
+  }
+
+  .date-range-presets__header {
+    width: 100%;
+  }
+
+  .date-preset-btn {
+    flex: 1 1 calc(50% - 0.5rem);
+    min-width: 8rem;
+  }
+
+  [data-theme="dark"] .date-range-presets {
+    border-top-color: color-mix(in srgb, #374151 70%, transparent);
   }
 }

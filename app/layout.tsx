@@ -1,9 +1,12 @@
 import type { Metadata } from "next";
-import { Geist_Mono, Nunito } from "next/font/google";
+import { Geist_Mono, Nunito, Figtree } from "next/font/google";
 import "./globals.css";
 import Navbar from "@/components/navbar";
 import { ThemeProvider } from "@/components/Providers/ThemeProvider";
 import { AuthProvider } from "@/providers/AuthProvider";
+import { cn } from "@/lib/utils";
+
+const figtree = Figtree({subsets:['latin'],variable:'--font-sans'});
 
 const nunito = Nunito({
   variable: "--font-nunito",
@@ -31,7 +34,7 @@ export default function RootLayout({
     <html
       lang="en"
       suppressHydrationWarning
-      className={`${nunito.variable} ${geistMono.variable} h-full antialiased`}
+      className={cn("h-full", "antialiased", nunito.variable, geistMono.variable, "font-sans", figtree.variable)}
     >
 
       <body className="h-screen flex flex-col relative">

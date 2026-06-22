@@ -5,15 +5,27 @@ import AverageGraphTrend from './components/AverageGraphTrend'
 import { useEffect } from 'react'
 import Loader from '@/components/UI/Loader'
 import { readingsSelectors, useReadingStore } from '@/store/readingsStore'
+import { useCalendarStore } from '@/store/calendarStore'
 
 
 export default function BloodPressureAverage() {
 
     const loading = useReadingStore(readingsSelectors.loading)
     const fetchReading = useReadingStore(s => s.getReadings)
+    const selectedDate = useCalendarStore((state) => state.selectedDate)
+
     useEffect(() => {
         fetchReading()
     }, [fetchReading])
+
+    useEffect(() => {
+        if (selectedDate === undefined) {
+            fetchReading('all')
+        } else if (selectedDate?.from && selectedDate?.to) {
+            fetchReading(selectedDate)
+        }
+
+    }, [selectedDate, fetchReading])
 
     return (
         <section className='flex flex-1  flex-col '>

@@ -5,6 +5,16 @@ import Lock from "@/assets/images/Lock.svg"
 import share from "@/assets/images/share.svg"
 import MicrosoftExcelLogo from "@/assets/images/MicrosoftExcelLogo.svg"
 import FileCode from "@/assets/images/FileCode.svg"
+import { exportToCsv, exportToJson, getLevelImage } from '@/utils'
+import { readingsSelectors, useReadingStore } from '@/store/readingsStore'
+import moment from 'moment'
+import { useCalendarStore } from '@/store/calendarStore'
+
+
+import jsPDF from "jspdf";
+import autoTable from "jspdf-autotable";
+import { ReadingType } from '@/utils/types'
+
 
 export default function ExportTool() {
     const exportTool = [
@@ -14,12 +24,7 @@ export default function ExportTool() {
             desc: "Best for spreadsheet apps like Excel or Google Sheets. Easy to sort and filter.",
             type: "csv"
         },
-        {
-            icon: FileCode,
-            title: "Export as JSON",
-            desc: "Structured data format. Ideal for developers or importing to other apps.",
-            type: "json"
-        },
+
         {
             icon: MicrosoftExcelLogo,
             title: "Export as PDF",
@@ -27,11 +32,76 @@ export default function ExportTool() {
             type: "pdf"
         },
 
+        {
+            icon: FileCode,
+            title: "Export as JSON",
+            desc: "Structured data format. Ideal for developers or importing to other apps.",
+            type: "json"
+        },
+
     ]
+    const selectedDate = useCalendarStore((state) => state.selectedDate)
+
+    const reverseReadings = useReadingStore(readingsSelectors.readings)
+    if (!reverseReadings) return
+    const readings = reverseReadings.reverse()
+
 
     const handleExport = (type: string) => {
-        console.log(`Exporting data as ${type}`)
+        const data = readings.map((reading) => ({
+            Date: moment(reading.created_at).format("DD MMM YYYY"),
+            Time: moment(reading.created_at).format("hh:mm A"),
+            Systolic: reading.systolic,
+            Diastolic: reading.diastolic,
+            Pulse: reading.pulse,
+            Result: getLevelImage(reading.systolic, reading.diastolic, reading.pulse, 'text'),
+            Notes: reading.note || "N/A",
+        }))
+
+
+        const jsonData = readings.map((r) => ({
+            // id: r.id,
+            date: r.created_at,
+            systolic: r.systolic,
+            diastolic: r.diastolic,
+            pulse: r.pulse,
+            notes: r.note,
+        }))
+        if (type === "csv") {
+            exportToCsv(data, `blood_pressure_data_(${selectedDate ? `${moment(selectedDate.from).format("DD MMM,YYYY")}-${moment(selectedDate.to).format("DD MMM,YYYY")}` : "all"}).csv`)
+        }
+
+        if (type === 'pdf') {
+            generatePdf(readings)
+        }
+
+        if (type === 'json') {
+
+            exportToJson(jsonData, `blood_pressure_data_(${selectedDate ? `${moment(selectedDate.from).format("DD MMM,YYYY")}-${moment(selectedDate.to).format("DD MMM,YYYY")}` : "all"}).json`)
+        }
     }
+
+    const generatePdf = (readings: ReadingType[]) => {
+        const doc = new jsPDF();
+
+        doc.setFontSize(18);
+        doc.text(`Blood Pressure Report (${selectedDate ? `${moment(selectedDate.from).format("DD MMM,YYYY")}-${moment(selectedDate.to).format("DD MMM,YYYY")}` : "All Readings"})`, 14, 20);
+
+        autoTable(doc, {
+            startY: 30,
+            head: [["Date", "Time", "BP", "Pulse", "Result", "Notes"]],
+            body: readings.map((reading) => [
+                moment(reading.created_at).format("DD MMM YYYY"),
+                moment(reading.created_at).format("hh:mm A"),
+                `${reading.systolic}/${reading.diastolic}`,
+                reading.pulse,
+                getLevelImage(reading.systolic, reading.diastolic, reading.pulse, 'text'),
+                reading.note || "N/A"
+            ]),
+        });
+
+        doc.save(`blood_pressure_data_(${selectedDate ? `${moment(selectedDate.from).format("DD MMM,YYYY")}-${moment(selectedDate.to).format("DD MMM,YYYY")}` : "all"}).pdf`);
+    };
 
     return (
         <section className='space-y-3 md:space-y-4'>

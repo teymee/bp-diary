@@ -309,7 +309,7 @@ export default function FirstRow() {
             <section className='h-full'>
                 <section className='flex flex-col gap-4 h-full justify-between'>
 
-                    <OverviewCard image={bpAverage} title="Blood Pressure Average" noPadding={true}>
+                    <OverviewCard image={bpAverage} title="BP Insights" noPadding={true}>
                         <section className=' text-sm h-full'>
                             {
                                 !averageDiastolic && (

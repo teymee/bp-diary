@@ -7,6 +7,12 @@ import hbp1 from "@/assets/images/hbp1.svg"
 import hbp2 from "@/assets/images/hbp2.svg"
 import { useAuthStore } from "@/store/authStore";
 
+export const readingsCategories = [
+  { label: "Normal", value: "normal" },
+  { label: "Elevated", value: "elevated" },
+  { label: "High Blood Pressure (Stage 1)", value: "hbp1" },
+  { label: "High Blood Pressure (Stage 2)", value: "hbp2" },
+];
 
 export const exportToJson = (
   data: unknown[],

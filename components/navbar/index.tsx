@@ -112,8 +112,8 @@ export default function Navbar() {
 
   const routes = [
     {
-      name: "BP Averages",
-      link: "/blood-pressure-average"
+      name: "BP Insights",
+      link: "/bp-insights"
     },
     {
       name: "BP Goal",

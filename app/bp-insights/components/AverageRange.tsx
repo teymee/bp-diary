@@ -7,11 +7,12 @@ import trendDown from "@/assets/images/trend-down.svg"
 import whiteTrend from "@/assets/images/white-trend.svg"
 import { getLevelImage } from '@/utils'
 import { readingsSelectors, useReadingStore } from '@/store/readingsStore'
+import DonutGraphTrend from './DonutGraphTrend'
 
 
 export default function AverageRange() {
 
-    const  readings= useReadingStore(readingsSelectors.readings)
+    const readings = useReadingStore(readingsSelectors.readings)
     if (!readings) return
 
     const latestData = null
@@ -52,8 +53,8 @@ export default function AverageRange() {
                 </section>
             </OverviewCard>
 
-
-            <OverviewCard image={whiteTrend} title="Range">
+            <DonutGraphTrend />
+            {/* <OverviewCard image={whiteTrend} title="Range">
                 <section className=' text-white-200 text-sm'>
                     {
                         !latestData && (
@@ -85,7 +86,7 @@ export default function AverageRange() {
                         )
                     }
                 </section>
-            </OverviewCard>
+            </OverviewCard> */}
         </section>
     )
 }

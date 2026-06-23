@@ -39,9 +39,20 @@ export default function AverageGraphTrend() {
         })
     })
 
+    const timestampLabels = sortedReadings.map((reading) => {
+        const sourceDate = reading.recorded_at || reading.created_at
+        return new Date(sourceDate).toLocaleString('en-US', {
+            month: 'short',
+            day: 'numeric',
+            hour: 'numeric',
+            minute: '2-digit',
+        })
+    })
+
     const chartOptions: ApexOptions = {
         chart: {
-            type: 'line',
+            type: 'area',
+            height: '100%',
             toolbar: { show: false },
             zoom: { enabled: false },
             animations: { enabled: true, speed: 450 },
@@ -92,6 +103,16 @@ export default function AverageGraphTrend() {
         stroke: {
             curve: 'smooth',
             width: 3,
+        },
+        fill: {
+            type: 'gradient',
+            gradient: {
+                shadeIntensity: 1,
+                inverseColors: false,
+                opacityFrom: 0.35,
+                opacityTo: 0.05,
+                stops: [0, 90, 100],
+            },
         },
         markers: {
             size: 4,
@@ -149,6 +170,12 @@ export default function AverageGraphTrend() {
         tooltip: {
             theme: 'dark',
             shared: true,
+            x: {
+                formatter: (_value: string, opts?: { dataPointIndex?: number }) => {
+                    const index = opts?.dataPointIndex ?? -1
+                    return index >= 0 ? `Taken: ${timestampLabels[index]}` : ''
+                },
+            },
             y: {
                 formatter: (value: number) => `${value} mmHg`,
             },
@@ -167,9 +194,6 @@ export default function AverageGraphTrend() {
             {
                 breakpoint: 1024,
                 options: {
-                    chart: {
-                        height: 320,
-                    },
                     xaxis: {
                         labels: {
                             style: {
@@ -182,9 +206,6 @@ export default function AverageGraphTrend() {
             {
                 breakpoint: 768,
                 options: {
-                    chart: {
-                        height: 280,
-                    },
                     markers: {
                         size: 3,
                     },
@@ -218,9 +239,6 @@ export default function AverageGraphTrend() {
             {
                 breakpoint: 480,
                 options: {
-                    chart: {
-                        height: 250,
-                    },
                     markers: {
                         size: 2,
                     },
@@ -242,7 +260,7 @@ export default function AverageGraphTrend() {
 
     return (
         <section className='flex h-full flex-col'>
-            <OverviewCard image={bpAverage} title="Blood Pressure Average">
+            <OverviewCard image={bpAverage} title="BP Insights">
 
                 <section className='text-white-200 text-sm h-full'>
                     {
@@ -261,9 +279,9 @@ export default function AverageGraphTrend() {
 
                     {
                         readings && readings.length > 0 && (
-                            <section className="flex h-full w-full flex-col items-stretch justify-center py-2 sm:py-4">
-                                <section className="h-62.5 w-full sm:h-80 md:h-90 lg:h-105">
-                                    <ReactChart options={chartOptions} series={series} type="line" height="100%" width="100%" />
+                            <section className="flex h-full min-h-72 w-full flex-col items-stretch justify-center py-2 sm:py-4">
+                                <section className="h-full w-full flex-1">
+                                    <ReactChart options={chartOptions} series={series} type="area" height="100%" width="100%" />
                                 </section>
                             </section>
                         )

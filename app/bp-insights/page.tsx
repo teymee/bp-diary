@@ -30,7 +30,7 @@ export default function BloodPressureAverage() {
     return (
         <section className='flex flex-1  flex-col '>
 
-            <div><h1 className='text-3xl font-semibold sm:text-4xl'>Blood Pressure Average</h1></div>
+            <div><h1 className='text-3xl font-semibold sm:text-4xl'>BP Insights</h1></div>
 
             {
                 loading && <Loader />

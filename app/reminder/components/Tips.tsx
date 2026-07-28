@@ -27,7 +27,7 @@ export default function Tips() {
           if (response) setPermission(true)
         } catch (error) {
           console.log(error)
-          setStatusMessage(error)
+          // setStatusMessage(error)
 
         }
       }

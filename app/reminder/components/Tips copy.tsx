@@ -22,7 +22,7 @@ export default function Tips() {
     setPermission(Notification.permission)
   }, [])
 
-  const handlePermissionChange = async (checked) => {
+  const handlePermissionChange = async (checked: boolean) => {
     setFeedback('')
 
     if (!checked) {

@@ -1,5 +1,21 @@
+export interface ReminderType {
+  id: string,
+  user_id: string,
+  title: string,
+  time: string,
+  start_date: string,
+  end_date: string | null,
+  repeat_type: "once" | "daily" | "weekly",
+  repeat_days: string[] | null,
+  is_enabled: boolean,
+  created_at: string
+}
+
+export type CreateReminderType = Omit<ReminderType, "id" | "created_at" | "user_id">
+export type UpdateReminderType = Partial<CreateReminderType>
+
 export type GoalType = {
-  id:string,
+  id: string,
   goal_name: string,
   systolic: number,
   diastolic: number,
@@ -9,7 +25,6 @@ export type GoalType = {
 }
 
 export type ReadingType = {
-
   created_at: string,
   diastolic: number,
   id: string,

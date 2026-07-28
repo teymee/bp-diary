@@ -122,8 +122,10 @@ export default function Navbar() {
     {
       name: "All Readings",
       link: "/all-reading"
+    },
+    {
+      name: "Reminders", link: "/reminder"
     }
-
   ]
 
   return (

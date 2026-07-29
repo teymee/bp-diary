@@ -53,7 +53,7 @@ export default {
     );
 
     for (const reminder of dueReminders) {
-      const { data: subscription } = ctx.supabaseAdmin
+      const { data: subscription } = await ctx.supabaseAdmin
         .from("push_subscriptions")
         .select("*")
         .eq("user_id", reminder.user_id)
@@ -88,7 +88,7 @@ export default {
           JSON.stringify({
             title: reminder.title,
             body: "It's time to record your blood pressure.",
-            url: "/readings/new",
+            url: "/add-reading",
             reminderId: reminder.id,
           }),
           {
@@ -109,6 +109,11 @@ export default {
         console.error(err);
       }
     }
+
+    return Response.json({
+      checked: reminders.length,
+      due: dueReminders.length,
+    });
   }),
 };
 

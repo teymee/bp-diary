@@ -29,11 +29,11 @@ export default {
     }
     */
 
-    const { name } = await req.json();
+    // const { name } = await req.json();
 
-    return Response.json({
-      message: `Hello ${name}!`,
-    });
+    // return Response.json({
+    //   message: `Hello ${name}!`,
+    // });
 
     // 🚨 Reminder query edge function
 

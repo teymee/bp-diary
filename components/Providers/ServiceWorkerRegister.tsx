@@ -1,18 +1,15 @@
 "use client"
-import { useEffect } from 'react'
+
+import { useEffect } from "react"
 
 export default function ServiceWorkerRegister() {
-    useEffect(() => {
+  useEffect(() => {
+    if (!("serviceWorker" in navigator)) return
 
-        if ("serviceWorker" in navigator) {
-            navigator.serviceWorker.register("/service-worker.js")
-        } else {
-            throw new Error("Service workers are not supported.");
+    navigator.serviceWorker.register("/service-worker.js").catch((error) => {
+      console.error("BP Diary service worker registration failed:", error)
+    })
+  }, [])
 
-        }
-
-
-    }, [])
-
-    return null
+  return null
 }

@@ -6,6 +6,7 @@ import { ThemeProvider } from "@/components/Providers/ThemeProvider";
 import { AuthProvider } from "@/providers/AuthProvider";
 import { cn } from "@/lib/utils";
 import ServiceWorkerRegister from "@/components/Providers/ServiceWorkerRegister";
+import InstallPrompt from "@/components/Providers/InstallPrompt";
 
 const figtree = Figtree({ subsets: ['latin'], variable: '--font-sans' });
 
@@ -49,9 +50,10 @@ export default function RootLayout({
             <Navbar />
 
             <section className="mt-4 wrapper flex flex-1 flex-col">
-              {/* <ServiceWorkerRegister /> */}
               {children}
             </section>
+            <ServiceWorkerRegister />
+            <InstallPrompt />
           </ThemeProvider>
         </AuthProvider>
       </body>

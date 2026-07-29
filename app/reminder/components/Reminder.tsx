@@ -119,7 +119,7 @@ export default function Reminder() {
     return (
         <OverviewCard image={latestReading} title="Reminder">
             <section className='flex justify-between py-4 lg:flex-row gap-y-6 flex-col'>
-                <section className="lg:border-r-2 lg:w-[40%] w-full py-4">
+                <section className="lg:border-r-2 border-b lg:border-b-0 lg:w-[40%] w-full py-4  pb-10">
                     <form onSubmit={handleSubmit} className='space-y-4 w-11/12'>
                         <section className="space-y-2">
                             <label htmlFor="title" className='labelStyle'>Title</label>

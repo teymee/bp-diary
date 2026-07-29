@@ -21,45 +21,123 @@ export async function registerServiceWorker() {
 
 export const disablePushNotification = async () => {
   const registration = await navigator.serviceWorker.ready;
+
   const subscription = await registration.pushManager.getSubscription();
 
-  if (subscription) {
-    await subscription.unsubscribe();
+  if (!subscription) {
+    return;
+  }
 
-    await supabase
-      .from("push_subscriptions")
-      .delete()
-      .eq("endpoint", subscription.endpoint);
+  const endpoint = subscription.endpoint;
+
+  const unsubscribed = await subscription.unsubscribe();
+
+  if (!unsubscribed) {
+    throw new Error("Failed to unsubscribe from push notifications.");
+  }
+
+  const { error } = await supabase
+    .from("push_subscriptions")
+    .delete()
+    .eq("endpoint", endpoint);
+
+  if (error) {
+    throw error;
   }
 };
+
+// export const disablePushNotification = async () => {
+//   const registration = await navigator.serviceWorker.ready;
+//   const subscription = await registration.pushManager.getSubscription();
+
+//   if (subscription) {
+//     await subscription.unsubscribe();
+
+//     await supabase
+//       .from("push_subscriptions")
+//       .delete()
+//       .eq("endpoint", subscription.endpoint);
+//   }
+// };
 
 export const enablePushNotification = async (userId: string) => {
   const permission = await requestNotificationPermission();
 
-  console.log(permission, "request permssion response");
-
   if (permission !== "granted") {
-    return;
+    throw new Error("Notification permission was not granted.");
   }
 
   const registration = await registerServiceWorker();
 
-  const subscription = await registration.pushManager.subscribe({
-    userVisibleOnly: true,
-    applicationServerKey: urlBase64ToUint8Array(
-      process.env.NEXT_PUBLIC_VAPID_PUBLIC_KEY!,
-    ),
-  });
+  let subscription = await registration.pushManager.getSubscription();
+
+  if (!subscription) {
+    subscription = await registration.pushManager.subscribe({
+      userVisibleOnly: true,
+      applicationServerKey: urlBase64ToUint8Array(
+        process.env.NEXT_PUBLIC_VAPID_PUBLIC_KEY!,
+      ),
+    });
+  }
 
   const json = subscription.toJSON();
-  console.log(json, "subsciption in json format");
 
-  const { data } = await supabase.from("push_subscriptions").upsert({
-    user_id: userId,
-    endpoint: json.endpoint,
-    auth: json.keys?.auth,
-    p256dh: json.keys?.p256dh,
-  });
+  console.log("Push subscription:", json);
+
+  if (!json.endpoint || !json.keys?.auth || !json.keys?.p256dh) {
+    throw new Error("Invalid push subscription.");
+  }
+
+  const { data, error } = await supabase
+    .from("push_subscriptions")
+    .upsert(
+      {
+        user_id: userId,
+        endpoint: json.endpoint,
+        auth: json.keys.auth,
+        p256dh: json.keys.p256dh,
+      },
+      {
+        onConflict: "endpoint",
+      },
+    )
+    .select()
+    .single();
+
+  if (error) {
+    throw error;
+  }
 
   return data;
 };
+
+// export const enablePushNotification = async (userId: string) => {
+//   const permission = await requestNotificationPermission();
+
+//   console.log(permission, "request permssion response");
+
+//   if (permission !== "granted") {
+//     return;
+//   }
+
+//   const registration = await registerServiceWorker();
+
+//   const subscription = await registration.pushManager.subscribe({
+//     userVisibleOnly: true,
+//     applicationServerKey: urlBase64ToUint8Array(
+//       process.env.NEXT_PUBLIC_VAPID_PUBLIC_KEY!,
+//     ),
+//   });
+
+//   const json = subscription.toJSON();
+//   console.log(json, "subsciption in json format");
+
+//   const { data } = await supabase.from("push_subscriptions").upsert({
+//     user_id: userId,
+//     endpoint: json.endpoint,
+//     auth: json.keys?.auth,
+//     p256dh: json.keys?.p256dh,
+//   });
+
+//   return data;
+// };

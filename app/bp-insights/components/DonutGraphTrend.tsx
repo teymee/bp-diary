@@ -17,7 +17,7 @@ export default function DonutGraphTrend() {
         const category = readingsCategories[i].label
         const value = readingsCategories[i].value
         const count = categoriesList.filter(cate => {
-            return cate.toLowerCase() === category.toLowerCase()
+            return cate?.toLowerCase() === category?.toLowerCase()
         }).length
 
         chartArray.push({

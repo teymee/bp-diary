@@ -209,7 +209,7 @@ export default function CalendarView() {
             hour: 'numeric',
             minute: '2-digit',
             hour12: true,
-        }).toLowerCase()
+        })?.toLowerCase()
         const { categoryLabel, categoryColor } = getReadingCategoryMeta(reading)
 
         return (
@@ -286,11 +286,10 @@ export default function CalendarView() {
                                                 type='button'
                                                 onClick={() => canSelectDay && handleDaySelect(dayKey)}
                                                 disabled={!canSelectDay}
-                                                className={`flex min-h-20 flex-col gap-1 rounded-lg border p-2 text-left transition-colors sm:min-h-24 ${
-                                                    day.isCurrentMonth
+                                                className={`flex min-h-20 flex-col gap-1 rounded-lg border p-2 text-left transition-colors sm:min-h-24 ${day.isCurrentMonth
                                                         ? 'bg-white border-white-300 hover:bg-white-50 dark:bg-black-200 dark:border-white/20 dark:hover:bg-black-100'
                                                         : 'bg-white-50 border-white-200 hover:bg-white-100 dark:bg-black-300 dark:border-white/12 dark:hover:bg-black-200'
-                                                } ${isSelected ? 'ring-2 ring-black/15 dark:ring-white/30' : ''} ${!canSelectDay ? 'cursor-not-allowed opacity-45' : ''}`}
+                                                    } ${isSelected ? 'ring-2 ring-black/15 dark:ring-white/30' : ''} ${!canSelectDay ? 'cursor-not-allowed opacity-45' : ''}`}
                                             >
                                                 <div className='flex items-center justify-between gap-2'>
                                                     <div className={`text-xs font-semibold ${day.isCurrentMonth ? 'text-foreground' : 'text-foreground/45'}`}>
@@ -311,7 +310,7 @@ export default function CalendarView() {
                                                                 hour: 'numeric',
                                                                 minute: '2-digit',
                                                                 hour12: true,
-                                                            }).toLowerCase()
+                                                            })?.toLowerCase()
                                                             const { categoryLabel, categoryColor } = getReadingCategoryMeta(reading)
                                                             const compactCategory = getCompactCategoryLabel(categoryLabel)
 

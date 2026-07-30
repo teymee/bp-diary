@@ -1,6 +1,7 @@
 'use client'
 import OverviewCard from '@/components/UI/OverviewCard'
 import fileText from "@/assets/images/green-fileText.svg"
+import camera from "@/assets/images/camera.svg"
 import { supabase } from '@/lib/supabase/client'
 import { useAuth } from '@/providers/AuthProvider'
 import Image from 'next/image'
@@ -8,21 +9,34 @@ import { useRouter } from 'next/navigation'
 import { Toast } from 'primereact/toast'
 import { useRef, useState } from 'react'
 import { Switch } from 'antd'
+import PictureReading from './PictureReading'
 
 export default function ManualReading() {
   const router = useRouter()
   const { session, sessionLoader } = useAuth()
   const toast = useRef<Toast>(null)
+  const [entryMode, setEntryMode] = useState<'manual' | 'picture'>('manual')
   const headerTopContent = (
     <section className='flex items-center justify-between gap-x-3 pt-2'>
       <div className='flex-2 flex items-center gap-x-3 text-base text-gray-700 font-medium'>
-        <Image src={fileText} alt="Latest Readings" width={50} height={50} />
-        <div className='dark:text-foreground'>Latest Readings</div>
+        <Image
+          src={entryMode === 'manual' ? fileText : camera}
+          alt=''
+          width={50}
+          height={50}
+        />
+        <div className='dark:text-foreground'>
+          {entryMode === 'manual' ? 'Enter reading manually' : 'Add reading from picture'}
+        </div>
       </div>
 
-      <div className='topContent text-xs font-medium text-gray-500 dark:text-white-200 underline underline-offset-2'>
-        Upload picture instead
-      </div>
+      <button
+        type='button'
+        onClick={() => setEntryMode(entryMode === 'manual' ? 'picture' : 'manual')}
+        className='topContent cursor-pointer rounded-lg px-2 py-1 text-xs font-semibold text-gray-500 underline underline-offset-2 transition hover:bg-gray-100 hover:text-green-700 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-green-600 dark:text-white-200 dark:hover:bg-gray-800 dark:hover:text-green-400'
+      >
+        {entryMode === 'manual' ? 'Upload picture instead' : 'Enter manually instead'}
+      </button>
     </section>
   )
 
@@ -185,7 +199,9 @@ export default function ManualReading() {
         title="Latest Readings"
         topContent={headerTopContent}
       >
-        <section className='p-4'>
+        {entryMode === 'picture' ? (
+          <PictureReading />
+        ) : <section className='p-4'>
           <form onSubmit={handleAddReading} className='space-y-4'>
             <section className='flex items-center  lg:justify-between  gap-4 [ lg:flex-row flex-col ]'>
               <div className='space-y-3 lg:w-1/2 w-full'>
@@ -251,7 +267,7 @@ export default function ManualReading() {
 
 
           </form>
-        </section>
+        </section>}
       </OverviewCard>
     </section>
   )

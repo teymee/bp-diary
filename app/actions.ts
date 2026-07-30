@@ -44,7 +44,7 @@ export async function extractBloodPressure(formData: FormData) {
     } catch (error: any) {
         console.error("API ERROR:", error.message || error);
         
-        // Specific check for the quota error you received earlier
+        // Specific check for quota errors.
         if (error.message?.includes("429") || error.message?.includes("limit: 0")) {
             return { 
                 error: "Your API project has 0 quota for this model. Please check your Google AI Studio project or link a billing account to activate the standard free tier." 
